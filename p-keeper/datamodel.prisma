@@ -1,0 +1,18 @@
+type Experience {
+  id: ID! @id
+  location: String! @unique
+  state: String! @unique
+  destination: String!
+  description: String!
+  robbed: Boolean!
+  items: String!
+  car: Car!
+}
+
+type Car {
+  id: ID! @id
+  color: String
+  plateNumber: String
+  passangers: Int
+  make: String
+}
