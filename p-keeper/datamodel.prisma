@@ -5,8 +5,8 @@ type Experience {
   destination: String!
   description: String!
   robbed: Boolean!
-  items: String!
-  car: Car!
+  items: String
+  car: Car! @relation(name:"CarToExperience", onDelete: CASCADE)
 }
 
 type Car {
@@ -15,4 +15,5 @@ type Car {
   plateNumber: String
   passangers: Int
   make: String
+  description: String
 }

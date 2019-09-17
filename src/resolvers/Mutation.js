@@ -1,23 +1,26 @@
 import uuidv4 from 'uuid/v4'
+import { Prisma } from 'prisma-binding'
 
 const Mutation = {
-    createUser(parent, args, { db }, info) {
-        const emailTaken = db.users.some((user) => user.email === args.data.email)
+    createExperience(parent, args, { prisma }, info) {
 
-        if (emailTaken) {
-            throw new Error('Email taken')
-        }
+        return prisma.mutation.createExperience({data: args.data}, info);
+        // const emailTaken = db.users.some((user) => user.email === args.data.email)
 
-        const user = {
-            id: uuidv4(),
-            ...args.data
-        }
+        // if (emailTaken) {
+        //     throw new Error('Email taken')
+        // }
 
-        db.users.push(user)
+        // const user = {
+        //     id: uuidv4(),
+        //     ...args.data
+        // }
 
-        return user
+        // db.users.push(user)
+
+        // return user
     },
-    deleteUser(parent, args, { db }, info) {
+    deleteExperience(parent, args, { db }, info) {
         const userIndex = db.users.findIndex((user) => user.id === args.id)
 
         if (userIndex === -1) {
@@ -39,7 +42,7 @@ const Mutation = {
 
         return deletedUsers[0]
     },
-    updateUser(parent, args, { db }, info) {
+    updateExperience(parent, args, { db }, info) {
         const { id, data } = args
         const user = db.users.find((user) => user.id === id)
 
@@ -67,7 +70,7 @@ const Mutation = {
 
         return user
     },
-    createPost(parent, args, { db, pubsub }, info) {
+    createCar(parent, args, { db, pubsub }, info) {
         const userExists = db.users.some((user) => user.id === args.data.author)
 
         if (!userExists) {
@@ -92,7 +95,7 @@ const Mutation = {
 
         return post
     },
-    deletePost(parent, args, { db, pubsub }, info) {
+    deleteCar(parent, args, { db, pubsub }, info) {
         const postIndex = db.posts.findIndex((post) => post.id === args.id)
 
         if (postIndex === -1) {
@@ -114,7 +117,7 @@ const Mutation = {
 
         return post
     },
-    updatePost(parent, args, { db, pubsub }, info) {
+    updateCar(parent, args, { db, pubsub }, info) {
         const { id, data } = args
         const post = db.posts.find((post) => post.id === id)
         const originalPost = { ...post }
@@ -159,67 +162,6 @@ const Mutation = {
         }
 
         return post
-    },
-    createComment(parent, args, { db, pubsub }, info) {
-        const userExists = db.users.some((user) => user.id === args.data.author)
-        const postExists = db.posts.some((post) => post.id === args.data.post && post.published)
-
-        if (!userExists || !postExists) {
-            throw new Error('Unable to find user and post')
-        }
-
-        const comment = {
-            id: uuidv4(),
-            ...args.data
-        }
-
-        db.comments.push(comment)
-        pubsub.publish(`comment ${args.data.post}`, {
-            comment: {
-                mutation: 'CREATED',
-                data: comment
-            }
-        })
-
-        return comment
-    },
-    deleteComment(parent, args, { db, pubsub }, info) {
-        const commentIndex = db.comments.findIndex((comment) => comment.id === args.id)
-
-        if (commentIndex === -1) {
-            throw new Error('Comment not found')
-        }
-
-        const [deletedComment] = db.comments.splice(commentIndex, 1)
-        pubsub.publish(`comment ${deletedComment.post}`, {
-            comment: {
-                mutation: 'DELETED',
-                data: deletedComment
-            }
-        })
-
-        return deletedComment
-    },
-    updateComment(parent, args, { db, pubsub }, info) {
-        const { id, data } = args
-        const comment = db.comments.find((comment) => comment.id === id)
-
-        if (!comment) {
-            throw new Error('Comment not found')
-        }
-
-        if (typeof data.text === 'string') {
-            comment.text = data.text
-        }
-
-        pubsub.publish(`comment ${comment.post}`, {
-            comment: {
-                mutation: 'UPDATED',
-                data: comment
-            }
-        })
-
-        return comment
     }
 }
 

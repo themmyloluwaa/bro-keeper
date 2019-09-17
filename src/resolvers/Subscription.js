@@ -1,5 +1,5 @@
 const Subscription = {
-    comment: {
+    experience: {
         subscribe(parent, { postId }, { db, pubsub }, info){
             const post = db.posts.find((post) => post.id === postId && post.published)
 
@@ -10,7 +10,7 @@ const Subscription = {
             return pubsub.asyncIterator(`comment ${postId}`)
         }
     },
-    post: {
+    car: {
         subscribe(parent, args, { pubsub }, info) {
             return pubsub.asyncIterator('post')
         }

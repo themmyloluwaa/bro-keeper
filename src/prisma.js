@@ -5,5 +5,4 @@ const prisma = new Prisma({
     endpoint: 'http://192.168.99.100:4467/'
 })
 
-prisma.query.cars(null, '{id color make}')
-.then(data => console.log(data));
+export {prisma as default};
