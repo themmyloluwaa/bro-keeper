@@ -18,21 +18,27 @@ type Subscription {
 }
 
 input CreateExperienceInput {
-   location: String! 
+  location: String! 
   state: String! 
   destination: String!
   description: String!
+  time: String
+  date: String!
   robbed: Boolean!
   items: String
+  car: Car!
 }
 
 input UpdateExperienceInput {
-   location: String! 
+    location: String! 
   state: String! 
   destination: String!
   description: String!
+  time: String
+  date: String!
   robbed: Boolean!
   items: String
+  car: Car!
 }
 
 input ExperienceQuery{
@@ -63,8 +69,10 @@ type Experience {
   state: String! 
   destination: String!
   description: String!
+  time: String
+  date: String!
   robbed: Boolean!
-  items: String!
+  items: String
   car: Car!
 }
 
@@ -75,10 +83,7 @@ type Car {
   passangers: Int
   make: String
   description: String
-  experience: Experience!
 }
-
-
 
 enum MutationType {
     CREATED

@@ -1,5 +1,5 @@
 # source: http://192.168.99.100:4467/
-# timestamp: Tue Sep 17 2019 07:50:44 GMT+0100 (West Africa Standard Time)
+# timestamp: Wed Sep 18 2019 04:47:54 GMT+0100 (West Africa Standard Time)
 
 type AggregateCar {
   count: Int!
@@ -395,6 +395,8 @@ type Experience implements Node {
   location: String!
   state: String!
   destination: String!
+  time: String
+  date: String!
   description: String!
   robbed: Boolean!
   items: String
@@ -416,6 +418,8 @@ input ExperienceCreateInput {
   location: String!
   state: String!
   destination: String!
+  time: String
+  date: String!
   description: String!
   robbed: Boolean!
   items: String
@@ -440,6 +444,10 @@ enum ExperienceOrderByInput {
   state_DESC
   destination_ASC
   destination_DESC
+  time_ASC
+  time_DESC
+  date_ASC
+  date_DESC
   description_ASC
   description_DESC
   robbed_ASC
@@ -453,6 +461,8 @@ type ExperiencePreviousValues {
   location: String!
   state: String!
   destination: String!
+  time: String
+  date: String!
   description: String!
   robbed: Boolean!
   items: String
@@ -499,6 +509,8 @@ input ExperienceUpdateInput {
   location: String
   state: String
   destination: String
+  time: String
+  date: String
   description: String
   robbed: Boolean
   items: String
@@ -509,6 +521,8 @@ input ExperienceUpdateManyMutationInput {
   location: String
   state: String
   destination: String
+  time: String
+  date: String
   description: String
   robbed: Boolean
   items: String
@@ -683,6 +697,86 @@ input ExperienceWhereInput {
 
   """All values not ending with the given string."""
   destination_not_ends_with: String
+  time: String
+
+  """All values that are not equal to given value."""
+  time_not: String
+
+  """All values that are contained in given list."""
+  time_in: [String!]
+
+  """All values that are not contained in given list."""
+  time_not_in: [String!]
+
+  """All values less than the given value."""
+  time_lt: String
+
+  """All values less than or equal the given value."""
+  time_lte: String
+
+  """All values greater than the given value."""
+  time_gt: String
+
+  """All values greater than or equal the given value."""
+  time_gte: String
+
+  """All values containing the given string."""
+  time_contains: String
+
+  """All values not containing the given string."""
+  time_not_contains: String
+
+  """All values starting with the given string."""
+  time_starts_with: String
+
+  """All values not starting with the given string."""
+  time_not_starts_with: String
+
+  """All values ending with the given string."""
+  time_ends_with: String
+
+  """All values not ending with the given string."""
+  time_not_ends_with: String
+  date: String
+
+  """All values that are not equal to given value."""
+  date_not: String
+
+  """All values that are contained in given list."""
+  date_in: [String!]
+
+  """All values that are not contained in given list."""
+  date_not_in: [String!]
+
+  """All values less than the given value."""
+  date_lt: String
+
+  """All values less than or equal the given value."""
+  date_lte: String
+
+  """All values greater than the given value."""
+  date_gt: String
+
+  """All values greater than or equal the given value."""
+  date_gte: String
+
+  """All values containing the given string."""
+  date_contains: String
+
+  """All values not containing the given string."""
+  date_not_contains: String
+
+  """All values starting with the given string."""
+  date_starts_with: String
+
+  """All values not starting with the given string."""
+  date_not_starts_with: String
+
+  """All values ending with the given string."""
+  date_ends_with: String
+
+  """All values not ending with the given string."""
+  date_not_ends_with: String
   description: String
 
   """All values that are not equal to given value."""

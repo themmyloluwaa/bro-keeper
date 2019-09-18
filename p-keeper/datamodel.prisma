@@ -3,6 +3,8 @@ type Experience {
   location: String! @unique
   state: String! @unique
   destination: String!
+  time: String
+  date: String!
   description: String!
   robbed: Boolean!
   items: String
