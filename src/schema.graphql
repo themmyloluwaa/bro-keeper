@@ -26,11 +26,11 @@ input CreateExperienceInput {
   date: String!
   robbed: Boolean!
   items: String
-  car: Car!
+  car: ID!
 }
 
 input UpdateExperienceInput {
-    location: String! 
+  location: String! 
   state: String! 
   destination: String!
   description: String!
@@ -38,7 +38,6 @@ input UpdateExperienceInput {
   date: String!
   robbed: Boolean!
   items: String
-  car: Car!
 }
 
 input ExperienceQuery{
@@ -51,7 +50,6 @@ input CreateCarInput {
   passangers: Int
   make: String
   description: String
-  Experience: ID!
 }
 
 input UpdateCarInput {
@@ -77,7 +75,7 @@ type Experience {
 }
 
 type Car {
- id: ID! 
+  id: ID! 
   color: String
   plateNumber: String
   passangers: Int
