@@ -1,7 +1,8 @@
+
 type Experience {
   id: ID! @id
-  location: String! @unique
-  state: String! @unique
+  location: String! 
+  state: String! 
   destination: String!
   time: String
   date: String!
@@ -15,7 +16,14 @@ type Car {
   id: ID! @id
   color: String
   plateNumber: String
-  passangers: Int
+  passengers: Int
   make: String
   description: String
+  experience: Experience @relation(link:INLINE, name:"CarToExperience")
+}
+
+type Tip {
+  id: ID! @id
+  yourTip: String
+  twitterHandle: String
 }

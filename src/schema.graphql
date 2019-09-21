@@ -1,7 +1,17 @@
+# query type definition containing 
+# 1 an array of experiences
+# 2 an array of all cars
+# 3 an array of tips from users
 type Query {
     experiences(query:ExperienceQuery!): [Experience!]!
-    cars(query: String): [Car!]!
+    cars(query: CarQuery): [Car!]!
+    tips(query:TipQuery): [Tip!]!
 }
+
+# mutation type definition containing mutations to 
+#create, update and delete exxperiences and always returns experience instance
+#create, update and delete cars and always returns car instance
+# create, update and delete tips and always returns tip instance
 
 type Mutation {
     createExperience(data: CreateExperienceInput!): Experience!
@@ -10,13 +20,19 @@ type Mutation {
     createCar(data: CreateCarInput!): Car!
     deleteCar(id: ID!): Car!
     updateCar(id: ID!, data: UpdateCarInput!): Car!
+    createTip(data:CreateTipInput): Tip!
+    updateTip(id:ID!, data: UpdateTipInput!): Tip!
+    deleteTip(id:ID!): Tip!
 }
 
+# subscription type to always get live updates
 type Subscription {
     experience(postId: ID!): ExperienceSubscriptionPayload!
     car: CarSubscriptionPayload!
+    tip: TipSubscriptionPayload!
 }
 
+# the create experience instance required data
 input CreateExperienceInput {
   location: String! 
   state: String! 
@@ -29,38 +45,75 @@ input CreateExperienceInput {
   car: ID!
 }
 
+# the update experience instance required data
+
 input UpdateExperienceInput {
-  location: String! 
-  state: String! 
-  destination: String!
-  description: String!
+  location: String
+  state: String 
+  destination: String
+  description: String
   time: String
-  date: String!
-  robbed: Boolean!
+  date: String
+  robbed: Boolean
   items: String
 }
 
+# the  experience query required data
 input ExperienceQuery{
   location: String!
   state: String!
+  destination: String
+  description: String
+  time: String
+  date: String
+  robbed: Boolean
+  items: String
 }
+# the  car query required data
+
+input CarQuery{
+  color: String
+  plateNumber: String
+  passengers: Int
+  make: String
+  description: String
+}
+# the tip query required data
+input TipQuery {
+  yourTip: String
+  twitterHandle:String
+}
+
+# the create car instance required data
 input CreateCarInput {
    color: String
   plateNumber: String
-  passangers: Int
+  passengers: Int
   make: String
   description: String
+  experience: ID
+  
 }
-
+# the update car instance required data
 input UpdateCarInput {
     color: String
   plateNumber: String
-  passangers: Int
+  passengers: Int
   make: String
   description: String
 }
+# the create tip instance required data
+input CreateTipInput {
+  yourTip: String
+  twitterHandle:String
+}
+# the update tip instance required data
+input UpdateTipInput {
+  yourTip: String
+  twitterHandle:String
+}
 
-
+# experience type definition
 type Experience {
   id: ID! 
   location: String! 
@@ -74,27 +127,42 @@ type Experience {
   car: Car!
 }
 
+# car type definition
 type Car {
   id: ID! 
   color: String
   plateNumber: String
-  passangers: Int
+  passengers: Int
   make: String
   description: String
+   experience: Experience!
 }
 
+# tip type definition
+type Tip{
+  id: ID!
+  yourTip: String
+  twitterHandle:String
+}
 enum MutationType {
     CREATED
     UPDATED
     DELETED
 }
 
+# experience type subscription payload
 type ExperienceSubscriptionPayload {
     mutation: MutationType!
     data: Experience!
 }
-
+# car type subscription payload
 type CarSubscriptionPayload {
     mutation: MutationType!
     data: Car!
+}
+
+# tip type subscription payload
+type TipSubscriptionPayload {
+    mutation: MutationType!
+    data: Tip!
 }

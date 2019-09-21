@@ -1,11 +1,15 @@
 # source: http://192.168.99.100:4467/
-# timestamp: Wed Sep 18 2019 04:47:54 GMT+0100 (West Africa Standard Time)
+# timestamp: Sat Sep 21 2019 12:13:12 GMT+0100 (West Africa Standard Time)
 
 type AggregateCar {
   count: Int!
 }
 
 type AggregateExperience {
+  count: Int!
+}
+
+type AggregateTip {
   count: Int!
 }
 
@@ -18,9 +22,10 @@ type Car implements Node {
   id: ID!
   color: String
   plateNumber: String
-  passangers: Int
+  passengers: Int
   make: String
   description: String
+  experience: Experience
 }
 
 """A connection to a list of items."""
@@ -37,14 +42,24 @@ input CarCreateInput {
   id: ID
   color: String
   plateNumber: String
-  passangers: Int
+  passengers: Int
   make: String
   description: String
+  experience: ExperienceCreateOneWithoutCarInput
 }
 
-input CarCreateOneInput {
-  create: CarCreateInput
+input CarCreateOneWithoutExperienceInput {
+  create: CarCreateWithoutExperienceInput
   connect: CarWhereUniqueInput
+}
+
+input CarCreateWithoutExperienceInput {
+  id: ID
+  color: String
+  plateNumber: String
+  passengers: Int
+  make: String
+  description: String
 }
 
 """An edge in a connection."""
@@ -63,8 +78,8 @@ enum CarOrderByInput {
   color_DESC
   plateNumber_ASC
   plateNumber_DESC
-  passangers_ASC
-  passangers_DESC
+  passengers_ASC
+  passengers_DESC
   make_ASC
   make_DESC
   description_ASC
@@ -75,7 +90,7 @@ type CarPreviousValues {
   id: ID!
   color: String
   plateNumber: String
-  passangers: Int
+  passengers: Int
   make: String
   description: String
 }
@@ -117,40 +132,41 @@ input CarSubscriptionWhereInput {
   node: CarWhereInput
 }
 
-input CarUpdateDataInput {
-  color: String
-  plateNumber: String
-  passangers: Int
-  make: String
-  description: String
-}
-
 input CarUpdateInput {
   color: String
   plateNumber: String
-  passangers: Int
+  passengers: Int
   make: String
   description: String
+  experience: ExperienceUpdateOneWithoutCarInput
 }
 
 input CarUpdateManyMutationInput {
   color: String
   plateNumber: String
-  passangers: Int
+  passengers: Int
   make: String
   description: String
 }
 
-input CarUpdateOneRequiredInput {
-  create: CarCreateInput
+input CarUpdateOneRequiredWithoutExperienceInput {
+  create: CarCreateWithoutExperienceInput
   connect: CarWhereUniqueInput
-  update: CarUpdateDataInput
-  upsert: CarUpsertNestedInput
+  update: CarUpdateWithoutExperienceDataInput
+  upsert: CarUpsertWithoutExperienceInput
 }
 
-input CarUpsertNestedInput {
-  update: CarUpdateDataInput!
-  create: CarCreateInput!
+input CarUpdateWithoutExperienceDataInput {
+  color: String
+  plateNumber: String
+  passengers: Int
+  make: String
+  description: String
+}
+
+input CarUpsertWithoutExperienceInput {
+  update: CarUpdateWithoutExperienceDataInput!
+  create: CarCreateWithoutExperienceInput!
 }
 
 input CarWhereInput {
@@ -282,28 +298,28 @@ input CarWhereInput {
 
   """All values not ending with the given string."""
   plateNumber_not_ends_with: String
-  passangers: Int
+  passengers: Int
 
   """All values that are not equal to given value."""
-  passangers_not: Int
+  passengers_not: Int
 
   """All values that are contained in given list."""
-  passangers_in: [Int!]
+  passengers_in: [Int!]
 
   """All values that are not contained in given list."""
-  passangers_not_in: [Int!]
+  passengers_not_in: [Int!]
 
   """All values less than the given value."""
-  passangers_lt: Int
+  passengers_lt: Int
 
   """All values less than or equal the given value."""
-  passangers_lte: Int
+  passengers_lte: Int
 
   """All values greater than the given value."""
-  passangers_gt: Int
+  passengers_gt: Int
 
   """All values greater than or equal the given value."""
-  passangers_gte: Int
+  passengers_gte: Int
   make: String
 
   """All values that are not equal to given value."""
@@ -384,6 +400,7 @@ input CarWhereInput {
 
   """All values not ending with the given string."""
   description_not_ends_with: String
+  experience: ExperienceWhereInput
 }
 
 input CarWhereUniqueInput {
@@ -423,7 +440,24 @@ input ExperienceCreateInput {
   description: String!
   robbed: Boolean!
   items: String
-  car: CarCreateOneInput!
+  car: CarCreateOneWithoutExperienceInput!
+}
+
+input ExperienceCreateOneWithoutCarInput {
+  create: ExperienceCreateWithoutCarInput
+  connect: ExperienceWhereUniqueInput
+}
+
+input ExperienceCreateWithoutCarInput {
+  id: ID
+  location: String!
+  state: String!
+  destination: String!
+  time: String
+  date: String!
+  description: String!
+  robbed: Boolean!
+  items: String
 }
 
 """An edge in a connection."""
@@ -514,7 +548,7 @@ input ExperienceUpdateInput {
   description: String
   robbed: Boolean
   items: String
-  car: CarUpdateOneRequiredInput
+  car: CarUpdateOneRequiredWithoutExperienceInput
 }
 
 input ExperienceUpdateManyMutationInput {
@@ -526,6 +560,31 @@ input ExperienceUpdateManyMutationInput {
   description: String
   robbed: Boolean
   items: String
+}
+
+input ExperienceUpdateOneWithoutCarInput {
+  create: ExperienceCreateWithoutCarInput
+  connect: ExperienceWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: ExperienceUpdateWithoutCarDataInput
+  upsert: ExperienceUpsertWithoutCarInput
+}
+
+input ExperienceUpdateWithoutCarDataInput {
+  location: String
+  state: String
+  destination: String
+  time: String
+  date: String
+  description: String
+  robbed: Boolean
+  items: String
+}
+
+input ExperienceUpsertWithoutCarInput {
+  update: ExperienceUpdateWithoutCarDataInput!
+  create: ExperienceCreateWithoutCarInput!
 }
 
 input ExperienceWhereInput {
@@ -866,8 +925,6 @@ input ExperienceWhereInput {
 
 input ExperienceWhereUniqueInput {
   id: ID
-  location: String
-  state: String
 }
 
 """Raw JSON value"""
@@ -882,16 +939,22 @@ scalar Long
 type Mutation {
   createExperience(data: ExperienceCreateInput!): Experience!
   createCar(data: CarCreateInput!): Car!
+  createTip(data: TipCreateInput!): Tip!
   updateExperience(data: ExperienceUpdateInput!, where: ExperienceWhereUniqueInput!): Experience
   updateCar(data: CarUpdateInput!, where: CarWhereUniqueInput!): Car
+  updateTip(data: TipUpdateInput!, where: TipWhereUniqueInput!): Tip
   deleteExperience(where: ExperienceWhereUniqueInput!): Experience
   deleteCar(where: CarWhereUniqueInput!): Car
+  deleteTip(where: TipWhereUniqueInput!): Tip
   upsertExperience(where: ExperienceWhereUniqueInput!, create: ExperienceCreateInput!, update: ExperienceUpdateInput!): Experience!
   upsertCar(where: CarWhereUniqueInput!, create: CarCreateInput!, update: CarUpdateInput!): Car!
+  upsertTip(where: TipWhereUniqueInput!, create: TipCreateInput!, update: TipUpdateInput!): Tip!
   updateManyExperiences(data: ExperienceUpdateManyMutationInput!, where: ExperienceWhereInput): BatchPayload!
   updateManyCars(data: CarUpdateManyMutationInput!, where: CarWhereInput): BatchPayload!
+  updateManyTips(data: TipUpdateManyMutationInput!, where: TipWhereInput): BatchPayload!
   deleteManyExperiences(where: ExperienceWhereInput): BatchPayload!
   deleteManyCars(where: CarWhereInput): BatchPayload!
+  deleteManyTips(where: TipWhereInput): BatchPayload!
   executeRaw(database: PrismaDatabase, query: String!): Json!
 }
 
@@ -929,10 +992,13 @@ enum PrismaDatabase {
 type Query {
   experiences(where: ExperienceWhereInput, orderBy: ExperienceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Experience]!
   cars(where: CarWhereInput, orderBy: CarOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Car]!
+  tips(where: TipWhereInput, orderBy: TipOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tip]!
   experience(where: ExperienceWhereUniqueInput!): Experience
   car(where: CarWhereUniqueInput!): Car
+  tip(where: TipWhereUniqueInput!): Tip
   experiencesConnection(where: ExperienceWhereInput, orderBy: ExperienceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExperienceConnection!
   carsConnection(where: CarWhereInput, orderBy: CarOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CarConnection!
+  tipsConnection(where: TipWhereInput, orderBy: TipOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TipConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -944,4 +1010,233 @@ type Query {
 type Subscription {
   experience(where: ExperienceSubscriptionWhereInput): ExperienceSubscriptionPayload
   car(where: CarSubscriptionWhereInput): CarSubscriptionPayload
+  tip(where: TipSubscriptionWhereInput): TipSubscriptionPayload
+}
+
+type Tip implements Node {
+  id: ID!
+  yourTip: String
+  twitterHandle: String
+}
+
+"""A connection to a list of items."""
+type TipConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [TipEdge]!
+  aggregate: AggregateTip!
+}
+
+input TipCreateInput {
+  id: ID
+  yourTip: String
+  twitterHandle: String
+}
+
+"""An edge in a connection."""
+type TipEdge {
+  """The item at the end of the edge."""
+  node: Tip!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum TipOrderByInput {
+  id_ASC
+  id_DESC
+  yourTip_ASC
+  yourTip_DESC
+  twitterHandle_ASC
+  twitterHandle_DESC
+}
+
+type TipPreviousValues {
+  id: ID!
+  yourTip: String
+  twitterHandle: String
+}
+
+type TipSubscriptionPayload {
+  mutation: MutationType!
+  node: Tip
+  updatedFields: [String!]
+  previousValues: TipPreviousValues
+}
+
+input TipSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TipSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TipSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TipSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: TipWhereInput
+}
+
+input TipUpdateInput {
+  yourTip: String
+  twitterHandle: String
+}
+
+input TipUpdateManyMutationInput {
+  yourTip: String
+  twitterHandle: String
+}
+
+input TipWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TipWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TipWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TipWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  yourTip: String
+
+  """All values that are not equal to given value."""
+  yourTip_not: String
+
+  """All values that are contained in given list."""
+  yourTip_in: [String!]
+
+  """All values that are not contained in given list."""
+  yourTip_not_in: [String!]
+
+  """All values less than the given value."""
+  yourTip_lt: String
+
+  """All values less than or equal the given value."""
+  yourTip_lte: String
+
+  """All values greater than the given value."""
+  yourTip_gt: String
+
+  """All values greater than or equal the given value."""
+  yourTip_gte: String
+
+  """All values containing the given string."""
+  yourTip_contains: String
+
+  """All values not containing the given string."""
+  yourTip_not_contains: String
+
+  """All values starting with the given string."""
+  yourTip_starts_with: String
+
+  """All values not starting with the given string."""
+  yourTip_not_starts_with: String
+
+  """All values ending with the given string."""
+  yourTip_ends_with: String
+
+  """All values not ending with the given string."""
+  yourTip_not_ends_with: String
+  twitterHandle: String
+
+  """All values that are not equal to given value."""
+  twitterHandle_not: String
+
+  """All values that are contained in given list."""
+  twitterHandle_in: [String!]
+
+  """All values that are not contained in given list."""
+  twitterHandle_not_in: [String!]
+
+  """All values less than the given value."""
+  twitterHandle_lt: String
+
+  """All values less than or equal the given value."""
+  twitterHandle_lte: String
+
+  """All values greater than the given value."""
+  twitterHandle_gt: String
+
+  """All values greater than or equal the given value."""
+  twitterHandle_gte: String
+
+  """All values containing the given string."""
+  twitterHandle_contains: String
+
+  """All values not containing the given string."""
+  twitterHandle_not_contains: String
+
+  """All values starting with the given string."""
+  twitterHandle_starts_with: String
+
+  """All values not starting with the given string."""
+  twitterHandle_not_starts_with: String
+
+  """All values ending with the given string."""
+  twitterHandle_ends_with: String
+
+  """All values not ending with the given string."""
+  twitterHandle_not_ends_with: String
+}
+
+input TipWhereUniqueInput {
+  id: ID
 }

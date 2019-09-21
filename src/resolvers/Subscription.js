@@ -1,18 +1,20 @@
 const Subscription = {
+    // experience subscription resolver
     experience: {
-        subscribe(parent, { postId }, { db, pubsub }, info){
-            const post = db.posts.find((post) => post.id === postId && post.published)
-
-            if (!post) {
-                throw new Error('Post not found')
-            }
-
-            return pubsub.asyncIterator(`comment ${postId}`)
+        subscribe(parent, args, { prisma }, info){
+            return prisma.subscription.experience(null, info)
         }
     },
+    // car subscription resolver
     car: {
-        subscribe(parent, args, { pubsub }, info) {
-            return pubsub.asyncIterator('post')
+        subscribe(parent, args, { prisma }, info) {
+            return prisma.subscription.car(null, info)
+        }
+    },
+    // experience subscription resolver
+    tip: {
+        subscribe(parent, args, { prisma }, info) {
+            return prisma.subscription.tip(null, info)
         }
     }
 }
