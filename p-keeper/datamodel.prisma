@@ -1,3 +1,13 @@
+type User {
+  id: ID! @id
+  name: String!
+  email: String! @unique
+  password: String!
+  experiences: [Experience!]! @relation(name: "ExperienceToUser", onDelete: CASCADE)
+  cars: [Car!]! @relation(name: "CarToUser", onDelete: CASCADE)
+  location: Location
+}
+
 
 type Experience {
   id: ID! @id
@@ -10,6 +20,8 @@ type Experience {
   robbed: Boolean!
   items: String
   car: Car! @relation(name:"CarToExperience", onDelete: CASCADE)
+  author: User! @relation(name: "ExperienceToUser", onDelete: SET_NULL)
+
 }
 
 type Car {
@@ -20,10 +32,18 @@ type Car {
   make: String
   description: String
   experience: Experience @relation(link:INLINE, name:"CarToExperience")
+  author: User! @relation(name: "CarToUser", onDelete: SET_NULL)
+  
 }
 
 type Tip {
   id: ID! @id
   yourTip: String
   twitterHandle: String
+}
+
+type Location {
+  id: ID! @id
+  longitutde: String
+  latitude:  String
 }
