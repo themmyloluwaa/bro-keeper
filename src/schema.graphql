@@ -1,19 +1,35 @@
 # query type definition containing 
-# 1 an array of experiences
-# 2 an array of all cars
-# 3 an array of tips from users
+# 1 an array of users
+# 2 an array of experiences
+# 3 an array of all cars
+# 4 an array of tips from users
+# 5 a query of one user
+# 6 a query of location from one user
+# 7 a query of users personal experiences
+
 type Query {
+    users(query: UserQuery): [User!]!
     experiences(query:ExperienceQuery!): [Experience!]!
+    myExperiences(query: String): [Experience!]!
     cars(query: CarQuery): [Car!]!
     tips(query:TipQuery): [Tip!]!
+    locations(query:LocationQuery): [Location!]!
+    me: User!
+    location:(id: ID!): Location!
 }
 
 # mutation type definition containing mutations to 
 #create, update and delete exxperiences and always returns experience instance
 #create, update and delete cars and always returns car instance
 # create, update and delete tips and always returns tip instance
+#create, update and delete user and always returns user instance
+# create, update and delete location and always returns location instance
 
 type Mutation {
+    createUser(data: CreateUserInput!): User!
+    login(data: LoginUserInput!): AuthPayload!
+    deleteUser(id: ID!): User!
+    updateUser(id: ID!, data: UpdateUserInput!): User!
     createExperience(data: CreateExperienceInput!): Experience!
     deleteExperience(id: ID!): Experience!
     updateExperience(id: ID!, data: UpdateExperienceInput!): Experience!
@@ -23,15 +39,44 @@ type Mutation {
     createTip(data:CreateTipInput): Tip!
     updateTip(id:ID!, data: UpdateTipInput!): Tip!
     deleteTip(id:ID!): Tip!
+    createLocation(data: CreateLocationInput!): Location!
+    deleteLocation(id: ID!): Location!
+    updateLocation(id: ID!, data: UpdateLocationInput!): Location!
 }
 
 # subscription type to always get live updates
 type Subscription {
     experience(postId: ID!): ExperienceSubscriptionPayload!
+    myExperience: ExperienceSubscriptionPayload!
     car: CarSubscriptionPayload!
     tip: TipSubscriptionPayload!
+    location: LocationSubscriptionPayload!
 }
 
+#type login authentication payload
+type AuthPayload {
+    token: String!
+    user: User!
+}
+
+# the create user instance required data
+input CreateUserInput {
+    name: String!
+    email: String!
+    password: String!
+}
+
+# the login user instance required data
+input LoginUserInput {
+    email: String!
+    password: String!
+}
+
+# the update user instance required data
+input UpdateUserInput {
+    name: String
+    email: String
+}
 # the create experience instance required data
 input CreateExperienceInput {
   location: String! 
@@ -57,7 +102,11 @@ input UpdateExperienceInput {
   robbed: Boolean
   items: String
 }
-
+# the  experience query required data
+input UserQuery{
+  name: String
+  email: String
+}
 # the  experience query required data
 input ExperienceQuery{
   location: String!
@@ -83,7 +132,11 @@ input TipQuery {
   yourTip: String
   twitterHandle:String
 }
-
+# the location query required data
+input LocationQuery {
+  longitutde: String
+  latitude:String
+}
 # the create car instance required data
 input CreateCarInput {
    color: String
@@ -96,7 +149,7 @@ input CreateCarInput {
 }
 # the update car instance required data
 input UpdateCarInput {
-    color: String
+  color: String
   plateNumber: String
   passengers: Int
   make: String
@@ -113,6 +166,28 @@ input UpdateTipInput {
   twitterHandle:String
 }
 
+# the create location instance required data
+input CreateLocationInput {
+    name: String!
+    email: String!
+    password: String!
+}
+# the update location instance required data
+input UpdateLocationInput {
+    name: String
+    email: String
+}
+#user type definition
+
+type User {
+    id: ID!
+    name: String!
+    email: String!
+    password: String!
+    experiences: [Experience!]!
+    cars: [Car!]!
+    location: Location
+}
 # experience type definition
 type Experience {
   id: ID! 
@@ -124,6 +199,7 @@ type Experience {
   date: String!
   robbed: Boolean!
   items: String
+  author: User!
   car: Car!
 }
 
@@ -135,6 +211,7 @@ type Car {
   passengers: Int
   make: String
   description: String
+  author: User!
    experience: Experience!
 }
 
@@ -143,6 +220,13 @@ type Tip{
   id: ID!
   yourTip: String
   twitterHandle:String
+}
+
+#location type definition
+type Location {
+  id: ID! 
+  longitutde: String
+  latitude:  String
 }
 enum MutationType {
     CREATED
@@ -153,16 +237,22 @@ enum MutationType {
 # experience type subscription payload
 type ExperienceSubscriptionPayload {
     mutation: MutationType!
-    data: Experience!
+    node: Experience!
 }
 # car type subscription payload
 type CarSubscriptionPayload {
     mutation: MutationType!
-    data: Car!
+    node: Car!
 }
 
 # tip type subscription payload
 type TipSubscriptionPayload {
     mutation: MutationType!
-    data: Tip!
+    node: Tip!
+}
+
+# location type subscription payload
+type LocationSubscriptionPayload {
+    mutation: MutationType!
+    node: Location!
 }
