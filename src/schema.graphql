@@ -89,6 +89,7 @@ input CreateExperienceInput {
   robbed: Boolean!
   items: String
   car: ID!
+  author: ID!
 }
 
 # the update experience instance required data

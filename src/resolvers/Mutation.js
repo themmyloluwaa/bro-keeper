@@ -28,6 +28,14 @@ const Mutation = {
             }
         }, info);
     }, 
+    updateUser(parent, args, {prisma}, info){
+        return prisma.mutation.updateUser({
+            where:{
+                id:args.id
+            },
+            data: args.data
+        })
+    },
     createExperience(parent, args, { prisma }, info) {
         const {data } = args;
       return prisma.mutation.createExperience({
@@ -40,13 +48,18 @@ const Mutation = {
             date: data.date,
             robbed: data.robbed,
             items: data.items,
+            author: {
+                connect:{
+                    id: data.author
+                }
+            },
             car: {
                 connect:{
                     id: data.car
                 }
             }
         }
-      },info)
+      },info);
         
     },
     // mutation to delete experience
