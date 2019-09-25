@@ -5,6 +5,8 @@ import Query from './resolvers/Query'
 import Mutation from './resolvers/Mutation'
 import Subscription from './resolvers/Subscription'
 import Experience from './resolvers/Experience'
+import User from './resolvers/User'
+import Location from './resolvers/Location'
 import Car from './resolvers/Car'
 import Tip from './resolvers/Tip'
 import prisma from './Prisma'
@@ -27,7 +29,9 @@ const server = new GraphQLServer({
         Subscription,
         Experience,
         Car,
-        Tip
+        Tip,
+        Location,
+        User
     },
     context: {
         pubsub,

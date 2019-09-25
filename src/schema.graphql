@@ -8,14 +8,14 @@
 # 7 a query of users personal experiences
 
 type Query {
-    users(query: UserQuery): [User!]!
+    users(query: String): [User!]!
     experiences(query:ExperienceQuery!): [Experience!]!
     myExperiences(query: String): [Experience!]!
     cars(query: CarQuery): [Car!]!
     tips(query:TipQuery): [Tip!]!
     locations(query:LocationQuery): [Location!]!
     me: User!
-    location:(id: ID!): Location!
+    location:(id: ID, query:String): Location!
 }
 
 # mutation type definition containing mutations to 
@@ -64,6 +64,7 @@ input CreateUserInput {
     name: String!
     email: String!
     password: String!
+    secretCode: Int!
 }
 
 # the login user instance required data
@@ -184,6 +185,7 @@ type User {
     name: String!
     email: String!
     password: String!
+    secretCode: Int!
     experiences: [Experience!]!
     cars: [Car!]!
     location: Location

@@ -1,4 +1,21 @@
 const Query = {
+    // resolver function to query all users
+    users(parent, args, {prisma}, info) {
+        const opArgs = {};
+        if(args.query){
+            opArgs.where={
+                OR:[
+                    {
+                        name_contains: args.query
+                    },
+                    {
+                        email_contains: args.query
+                    }
+                ]
+            }
+        } 
+        return prisma.query.users(opArgs, info);
+    },
     // resolver function to query all or specified experiences based on the location or state
     experiences(parent, args, {  prisma }, info) {
         const opArgs = {};
@@ -52,6 +69,22 @@ const Query = {
         const opArgs = {};
         
         return prisma.query.experiences(opArgs, info);
+    },
+    locations(parent, args, {prisma}, info) {
+        const opArgs = {};
+        opArgs.where = {
+            OR: [
+                {
+                    id: args.id
+                },
+                {
+                   latitude_contains : args.query
+                },
+            ]
+        }
+
+        return prisma.query.locations(opArgs, info);
+
     }
 }
 

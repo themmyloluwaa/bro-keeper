@@ -3,6 +3,7 @@ type User {
   name: String!
   email: String! @unique
   password: String!
+  secretCode: Int!
   experiences: [Experience!]! @relation(name: "ExperienceToUser", onDelete: CASCADE)
   cars: [Car!]! @relation(name: "CarToUser", onDelete: CASCADE)
   location: Location
