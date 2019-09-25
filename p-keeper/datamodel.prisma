@@ -6,7 +6,7 @@ type User {
   secretCode: Int!
   experiences: [Experience!]! @relation(name: "ExperienceToUser", onDelete: CASCADE)
   cars: [Car!]! @relation(name: "CarToUser", onDelete: CASCADE)
-  location: Location
+  location: Location @relation(name: "LocationToUser", onDelete: CASCADE)
 }
 
 
@@ -32,7 +32,7 @@ type Car {
   passengers: Int
   make: String
   description: String
-  experience: Experience @relation(link:INLINE, name:"CarToExperience")
+  experience: Experience! @relation(link:INLINE, name:"CarToExperience")
   author: User! @relation(name: "CarToUser", onDelete: SET_NULL)
   
 }
@@ -45,6 +45,7 @@ type Tip {
 
 type Location {
   id: ID! @id
-  longitutde: String
+  longitude: String
   latitude:  String
+ author: User @relation(link:INLINE, name:"LocationToUser")
 }

@@ -136,7 +136,7 @@ input TipQuery {
 }
 # the location query required data
 input LocationQuery {
-  longitutde: String
+  longitude: String
   latitude:String
 }
 # the create car instance required data
@@ -147,6 +147,7 @@ input CreateCarInput {
   make: String
   description: String
   experience: ID
+  author: ID
   
 }
 # the update car instance required data
@@ -170,14 +171,14 @@ input UpdateTipInput {
 
 # the create location instance required data
 input CreateLocationInput {
-    name: String!
-    email: String!
-    password: String!
+   latitude: String!
+   longitude: String!
+   author: ID
 }
 # the update location instance required data
 input UpdateLocationInput {
-    name: String
-    email: String
+   latitude: String
+   longitude: String
 }
 #user type definition
 
@@ -215,7 +216,7 @@ type Car {
   make: String
   description: String
   author: User!
-   experience: Experience!
+  experience: Experience!
 }
 
 # tip type definition
@@ -228,8 +229,9 @@ type Tip{
 #location type definition
 type Location {
   id: ID! 
-  longitutde: String
+  longitude: String
   latitude:  String
+  author: User!
 }
 enum MutationType {
     CREATED

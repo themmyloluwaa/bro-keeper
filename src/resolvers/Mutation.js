@@ -110,7 +110,17 @@ const Mutation = {
             plateNumber: data.plateNumber,
             passengers: data.passengers,
             make: data.make,
-            description: data.description
+            description: data.description,
+            author: {
+                connect:{
+                    id: data.author
+                }
+            },
+            experience: {
+                connect:{
+                    id: data.experience
+                }
+            }
           }
         },info)
         
@@ -199,7 +209,12 @@ const Mutation = {
         return prisma.mutation.createLocation({
           data: {
            latitude: data.latitude,
-           longitude: data.longitude
+           longitude: data.longitude,
+           author: {
+            connect:{
+                id: data.author
+            }
+        }
           }
         },info)
         
