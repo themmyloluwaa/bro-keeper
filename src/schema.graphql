@@ -15,7 +15,7 @@ type Query {
     tips(query:TipQuery): [Tip!]!
     locations(query:LocationQuery): [Location!]!
     me: User!
-    location:(id: ID, query:String): Location!
+    location: Location!
 }
 
 # mutation type definition containing mutations to 

@@ -3,17 +3,20 @@ import jwt from 'jsonwebtoken';
 
 
 const Mutation = {
-    // mutation to create experience
-    // prisma was destructured from the ctx or context parameter passed from the entry point
-    // new prisma instance would be returned;
-
+//   check if email is taken before creating user
+//    if email is taken, throw this error
+// check the length of the password and if secretcode provided is not less than four
+// throw error if conditions above return false
+// hash password
+// create the user and store in a user variable
+// return created user and a new token generated for that user
    async createUser(parent, {data}, {prisma}, info){
       const emailTaken = await prisma.exists.User({email: data.email});
       
       if(emailTaken){
           throw new Error('This email has already been used');
       }
-      if(data.password.length < 8 || data.secretCode.length !== 4){
+      if(data.password.length < 8 || data.secretCode.length < 4){
           throw new Error('Password must be 8 characters or longer');
       }
       const password = await bcrypt.hash(data.password, 10);
@@ -28,6 +31,9 @@ const Mutation = {
             token: jwt.sign({userId : user.id}, 'wonderful')
         };
     },
+    // check if user exist using the id before deleting
+    // if user does not exist, throw error
+    // delete user and return all the information about the user
     async deleteUser(parent, args, {prisma}, info){
         const userExists = await prisma.exists.User({id: args.id});
             
@@ -41,6 +47,29 @@ const Mutation = {
             }
         }, info);
     }, 
+  async login(parent, args, {prisma}, info){
+        const {data} = args;
+        const user = await prisma.query.user({
+            where:{
+                email: data.email
+            }
+        });
+        if(!user){
+            throw new Error('Invalid username and password');
+        }
+       
+        const password = await bcrypt.compare(data.password, user.password);
+
+        if(!password){
+            throw new Error("Invalid username and password");
+        }
+
+        return {
+            user,
+            token: jwt.sign({userId : user.id}, 'wonderful')
+        }
+
+    },
     updateUser(parent, args, {prisma}, info){
         return prisma.mutation.updateUser({
             where:{
@@ -49,6 +78,9 @@ const Mutation = {
             data: args.data
         })
     },
+      // mutation to create experience
+    // prisma was destructured from the ctx or context parameter passed from the entry point
+    // new prisma instance would be returned;
     createExperience(parent, args, { prisma }, info) {
         const {data } = args;
       return prisma.mutation.createExperience({
