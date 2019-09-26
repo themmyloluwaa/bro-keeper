@@ -33,9 +33,12 @@ const server = new GraphQLServer({
         Location,
         User
     },
-    context: {
-        pubsub,
-        prisma
+    context(request){
+        return {
+            pubsub,
+            prisma,
+            request
+        }
     }
 })
 
