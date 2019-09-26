@@ -1,5 +1,4 @@
-import uuidv4 from 'uuid/v4'
-import { Prisma } from 'prisma-binding'
+import bcrypt from 'bcryptjs';
 
 
 const Mutation = {
@@ -7,13 +6,20 @@ const Mutation = {
     // prisma was destructured from the ctx or context parameter passed from the entry point
     // new prisma instance would be returned;
 
-   async createUser(parent, args, {prisma}, info){
-      const emailTaken = await prisma.exists.User({email: args.data.email});
+   async createUser(parent, {data}, {prisma}, info){
+      const emailTaken = await prisma.exists.User({email: data.email});
       
       if(emailTaken){
           throw new Error('This email has already been used');
       }
-        return prisma.mutation.createUser({data: args.data},info);
+      if(data.password.length < 8 || data.secretCode.length !== 4){
+          throw new Error('Password must be 8 characters or longer');
+      }
+      const password = await bcrypt.hash(data.password, 10);
+        return prisma.mutation.createUser({data:{
+            ...data,
+            password
+        }},info);
     },
     async deleteUser(parent, args, {prisma}, info){
         const userExists = await prisma.exists.User({id: args.id});
