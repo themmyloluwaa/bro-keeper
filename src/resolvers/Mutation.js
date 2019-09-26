@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import getUserId from '../utils/getUserId'
 
 
 const Mutation = {
@@ -81,21 +82,15 @@ const Mutation = {
       // mutation to create experience
     // prisma was destructured from the ctx or context parameter passed from the entry point
     // new prisma instance would be returned;
-    createExperience(parent, args, { prisma }, info) {
+    createExperience(parent, args, { prisma, request }, info) {
+        const userId = getUserId(request)
         const {data } = args;
       return prisma.mutation.createExperience({
         data: {
-            location: data.location,
-            state: data.state,
-            destination: data.destination,
-            description: data.description,
-            time: data.time,
-            date: data.date,
-            robbed: data.robbed,
-            items: data.items,
+            ...data,
             author: {
                 connect:{
-                    id: data.author
+                    id: userId
                 }
             },
             car: {
@@ -151,11 +146,7 @@ const Mutation = {
         const {data } = args;
         return prisma.mutation.createCar({
           data: {
-            color: data.color,
-            plateNumber: data.plateNumber,
-            passengers: data.passengers,
-            make: data.make,
-            description: data.description,
+            ...data,
             author: {
                 connect:{
                     id: data.author
@@ -253,8 +244,7 @@ const Mutation = {
         const {data } = args;
         return prisma.mutation.createLocation({
           data: {
-           latitude: data.latitude,
-           longitude: data.longitude,
+           ...data,
            author: {
             connect:{
                 id: data.author
