@@ -7,7 +7,7 @@ if(!authorization) {
     throw new Error("Authentication required");
 }
 
-const token = authorization.replace('Bearer', '');
+const token = authorization.replace('Bearer ', '');
 const decoded = jwt.verify(token, 'wonderful');
 
 return decoded.userId;

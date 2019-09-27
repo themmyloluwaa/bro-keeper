@@ -87,7 +87,14 @@ const Mutation = {
         const {data } = args;
       return prisma.mutation.createExperience({
         data: {
-            ...data,
+            location: data.location,
+            state: data.state,
+            destination: data.destination,
+            description: data.description,
+            time: data.time,
+            date: data.date,
+            robbed: data.robbed,
+            items: data.items,
             author: {
                 connect:{
                     id: userId
@@ -244,7 +251,8 @@ const Mutation = {
         const {data } = args;
         return prisma.mutation.createLocation({
           data: {
-           ...data,
+           longitude: data.longitude,
+           latitude: data.latitude,
            author: {
             connect:{
                 id: data.author
@@ -259,7 +267,7 @@ const Mutation = {
         const LocationExists = await prisma.exists.Location({id: args.id});
                           
 
-        if (!Locationxists) {
+        if (!LocationExists) {
             throw new Error('Location not found')
         }
         

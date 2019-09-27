@@ -67,8 +67,9 @@ const Query = {
     // resolver to query all tips
     tips(parent, args, {  prisma }, info) {
         const opArgs = {};
-        
-        return prisma.query.experiences(opArgs, info);
+
+       
+        return prisma.query.tips(opArgs, info);
     },
     locations(parent, args, {prisma}, info) {
         const opArgs = {};

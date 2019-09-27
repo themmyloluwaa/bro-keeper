@@ -4,9 +4,9 @@ type User {
   email: String! @unique
   password: String!
   secretCode: Int!
-  experiences: [Experience!]! @relation(name: "ExperienceToUser", onDelete: CASCADE)
-  cars: [Car!]! @relation(name: "CarToUser", onDelete: CASCADE)
-  location: Location @relation(name: "LocationToUser", onDelete: CASCADE)
+  experiences: [Experience!]! @relation(link:TABLE,name: "ExperienceToUser", onDelete: CASCADE)
+  cars: [Car!]! @relation(link:TABLE,name: "CarToUser", onDelete: CASCADE)
+  location: Location @relation(link:TABLE,name: "LocationToUser", onDelete: CASCADE)
 }
 
 
@@ -20,8 +20,8 @@ type Experience {
   description: String!
   robbed: Boolean!
   items: String
-  car: Car! @relation(name:"CarToExperience", onDelete: CASCADE)
-  author: User! @relation(name: "ExperienceToUser", onDelete: SET_NULL)
+  car: Car! @relation(link:TABLE,name:"CarToExperience", onDelete: CASCADE)
+  author: User! @relation(name:"ExperienceToUser", onDelete:SET_NULL)
 
 }
 
@@ -32,8 +32,8 @@ type Car {
   passengers: Int
   make: String
   description: String
-  experience: Experience! @relation(link:INLINE, name:"CarToExperience")
-  author: User! @relation(name: "CarToUser", onDelete: SET_NULL)
+  experience: Experience @relation(name:"CarToExperience", onDelete:SET_NULL)
+  author: User! @relation(name:"CarToUser", onDelete:SET_NULL)
   
 }
 
@@ -47,5 +47,5 @@ type Location {
   id: ID! @id
   longitude: String
   latitude:  String
- author: User @relation(link:INLINE, name:"LocationToUser")
+ author: User @relation( name:"LocationToUser", onDelete:SET_NULL)
 }

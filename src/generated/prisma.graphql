@@ -1,5 +1,5 @@
 # source: http://192.168.99.100:4467/
-# timestamp: Wed Sep 25 2019 17:31:39 GMT+0100 (West Africa Standard Time)
+# timestamp: Fri Sep 27 2019 15:16:53 GMT+0100 (West Africa Standard Time)
 
 type AggregateCar {
   count: Int!
@@ -33,7 +33,7 @@ type Car implements Node {
   passengers: Int
   make: String
   description: String
-  experience: Experience!
+  experience: Experience
   author: User!
 }
 
@@ -54,7 +54,7 @@ input CarCreateInput {
   passengers: Int
   make: String
   description: String
-  experience: ExperienceCreateOneWithoutCarInput!
+  experience: ExperienceCreateOneWithoutCarInput
   author: UserCreateOneWithoutCarsInput!
 }
 
@@ -75,7 +75,7 @@ input CarCreateWithoutAuthorInput {
   passengers: Int
   make: String
   description: String
-  experience: ExperienceCreateOneWithoutCarInput!
+  experience: ExperienceCreateOneWithoutCarInput
 }
 
 input CarCreateWithoutExperienceInput {
@@ -397,7 +397,7 @@ input CarUpdateInput {
   passengers: Int
   make: String
   description: String
-  experience: ExperienceUpdateOneRequiredWithoutCarInput
+  experience: ExperienceUpdateOneWithoutCarInput
   author: UserUpdateOneRequiredWithoutCarsInput
 }
 
@@ -447,7 +447,7 @@ input CarUpdateWithoutAuthorDataInput {
   passengers: Int
   make: String
   description: String
-  experience: ExperienceUpdateOneRequiredWithoutCarInput
+  experience: ExperienceUpdateOneWithoutCarInput
 }
 
 input CarUpdateWithoutExperienceDataInput {
@@ -1254,9 +1254,11 @@ input ExperienceUpdateManyWithWhereNestedInput {
   data: ExperienceUpdateManyDataInput!
 }
 
-input ExperienceUpdateOneRequiredWithoutCarInput {
+input ExperienceUpdateOneWithoutCarInput {
   create: ExperienceCreateWithoutCarInput
   connect: ExperienceWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
   update: ExperienceUpdateWithoutCarDataInput
   upsert: ExperienceUpsertWithoutCarInput
 }
