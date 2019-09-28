@@ -190,8 +190,14 @@ const Mutation = {
         
     },
     // mutation to update car
-    async updateCar(parent, args, { prisma }, info) {
-        const carExists = await prisma.exists.Car({id: args.id});
+    async updateCar(parent, {data, id}, { prisma, request }, info) {
+        const userId = getUserId(request);
+        const carExists = await prisma.exists.Car({
+            id,
+            author:{
+                id: userId
+            }
+        });
                           
 
         if (!carExists) {
@@ -199,10 +205,8 @@ const Mutation = {
         }
         
            return prisma.mutation.updateCar({
-                where:{
-                    id:args.id
-                },
-                data:args.data
+                where:{id},
+                data
             }, info)
     },
     // mutation to delete car
