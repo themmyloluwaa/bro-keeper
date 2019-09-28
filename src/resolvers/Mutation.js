@@ -127,12 +127,6 @@ const Mutation = {
        if(!experienceExists) {
            throw new Error("You are not authorized to delete this experience");
        }
-        const experienceExists = await prisma.exists.Experience({id: args.id});
-                          
-
-        if (!experienceExists) {
-            throw new Error('Not found')
-        }
 
         return prisma.mutation.deleteExperience(
             {
@@ -266,54 +260,84 @@ const Mutation = {
             { where:{ id } },info);
     },
     // mutation to create location
-    createLocation(parent, args, { prisma }, info) {
+    createLocation(parent, args, { prisma, request }, info) {
         const {data } = args;
-        return prisma.mutation.createLocation({
-          data: {
-           longitude: data.longitude,
-           latitude: data.latitude,
-           author: {
-            connect:{
-                id: data.author
+        // check if authentication was provided
+        const authPresent = request.request.headers.authorization;
+        // if provided, get the userId and create location  with the authenticated user;
+        if(typeof authPresent !== 'undefined'){
+            const userId = getUserId(request);
+            return prisma.mutation.createLocation({
+              data: {
+               longitude: data.longitude,
+               latitude: data.latitude,
+               author: {
+                connect:{
+                    id: userId
+                }
             }
+              }
+            },info);
         }
-          }
-        },info)
-        
+        // else create a new location that doesn't require user to be signed up;
+        else{
+            return prisma.mutation.createLocation({
+                data: {
+                 longitude: data.longitude,
+                 latitude: data.latitude
+                }
+              },info)
+        }
     },
     // mutation to update location
-    async updateLocation(parent, args, { prisma }, info) {
-        const LocationExists = await prisma.exists.Location({id: args.id});
-                          
+    async updateLocation(parent, args, { prisma, request }, info) {
+         // check if authentication was provided
+         const authPresent = request.request.headers.authorization;
+         // if provided, check if it exists;
+         if(typeof authPresent !== 'undefined'){
+            const userId = getUserId(request);
+            const LocationExists = await prisma.exists.Location(
+                { id: args.id, author:{ id:userId }});   
+                if(!LocationExists){ throw new Error("Location does not exist")};
+                return prisma.mutation.updateLocation({
+                where:{ id:args.id }, data:args.data }, info)
+             }
+        else{
 
-        if (!LocationExists) {
-            throw new Error('Location not found')
-        }
-        
-           return prisma.mutation.updateLocation({
-                where:{
-                    id:args.id
-                },
-                data:args.data
-            }, info)
+            return prisma.mutation.updateLocation({
+                 where:{ id:args.id }, data:args.data}, info)
+        } 
     },
 
     // mutation to delete location
-    async deleteLocation(parent, args, { prisma }, info) {
-        const LocationExists = await prisma.exists.Location({id: args.id});
-                          
-
-        if (!LocationExists) {
-            throw new Error('Not found')
+    async deleteLocation(parent, args, { prisma, request }, info) {
+        const authPresent = request.request.headers.authorization;
+         // if provided, get the userId and check if location exist;               
+        if(typeof authPresent !== 'undefined'){
+            const userId = getUserId(request);
+            const LocationExists = await prisma.exists.Location(
+                { id: args.id, author:{ id:userId }});   
+                // if it doesn't exist, throw error
+                if(!LocationExists){ throw new Error("Location does not exist")};
+                // if it exist, delete the location
+                return prisma.mutation.deleteLocation({
+                where:{ id:args.id } }, info)
         }
 
-        return prisma.mutation.deleteLocation(
-            {
-                where:{
-
-                    id:args.id
-                }
-            },info)
+        else{
+            const LocationExists = await prisma.exists.Location({id: args.id});
+            if (!LocationExists) {
+                throw new Error('Not found')
+            }
+    
+            return prisma.mutation.deleteLocation(
+                {
+                    where:{
+    
+                        id:args.id
+                    }
+                },info)
+        }  
     },
 }
 

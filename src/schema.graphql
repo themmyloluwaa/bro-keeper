@@ -9,11 +9,11 @@
 
 type Query {
     users(query: String): [User!]!
-    experiences(query:ExperienceQuery!): [Experience!]!
+    experiences(query:ExperienceQuery): [Experience!]!
     myExperiences(id: ID!): [Experience!]!
     cars(query: CarQuery): [Car!]!
     tips(query:TipQuery): [Tip!]!
-    locations(query:LocationQuery): [Location!]!
+    locations(query:String): [Location!]!
     me: User!
     location: Location!
 }

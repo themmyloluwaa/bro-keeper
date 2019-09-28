@@ -1,3 +1,4 @@
+import getUserId from '../utils/getUserId'
 const Query = {
     // resolver function to query all users
     users(parent, args, {prisma}, info) {
@@ -34,6 +35,10 @@ const Query = {
         }
         
         return prisma.query.experiences(opArgs, info);
+    },
+    myExperiences(parent, args, {prisma, request}, info){
+        const userId = getUserId(request, false);
+
     },
     // resolver function to query all cars depending on operation arguements passed;
     cars(parent, args, { prisma }, info) {
