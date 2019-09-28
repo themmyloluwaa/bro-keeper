@@ -169,21 +169,22 @@ const Mutation = {
     },
 
     // mutation to create car
-     createCar(parent, args, { prisma }, info) {
+     createCar(parent, args, { prisma, request }, info) {
         const {data } = args;
+        const userId = getUserId(request);
         return prisma.mutation.createCar({
           data: {
             ...data,
             author: {
                 connect:{
-                    id: data.author
+                    id: userId
                 }
             },
-            experience: {
-                connect:{
-                    id: data.experience
-                }
-            }
+            // experience: {
+            //     connect:{
+            //         id: data.experience
+            //     }
+            // }
           }
         },info)
         

@@ -147,8 +147,8 @@ input CreateCarInput {
   passengers: Int
   make: String
   description: String
-  experience: ID
-  author: ID
+  # experience: ID
+  # author: ID
   
 }
 # the update car instance required data
