@@ -32,22 +32,6 @@ const Mutation = {
             token: jwt.sign({userId : user.id}, 'wonderful')
         };
     },
-    // check if user exist using the id before deleting
-    // if user does not exist, throw error
-    // delete user and return all the information about the user
-    async deleteUser(parent, args, {prisma}, info){
-        const userExists = await prisma.exists.User({id: args.id});
-            
-        if(!userExists){
-            throw new Error('User does not exist');
-        }
-
-        return prisma.mutation.deleteUser({
-            where: {
-                id: args.id
-            }
-        }, info);
-    }, 
   async login(parent, args, {prisma}, info){
         const {data} = args;
         const user = await prisma.query.user({
@@ -71,14 +55,33 @@ const Mutation = {
         }
 
     },
-    updateUser(parent, args, {prisma}, info){
+    async updateUser(parent, {data}, {prisma, request}, info){
+        const userId = getUserId(request);
+
         return prisma.mutation.updateUser({
             where:{
-                id:args.id
+                id:userId
             },
-            data: args.data
-        })
+            data
+        }, info)
     },
+        // check if user exist using the id before deleting
+    // if user does not exist, throw error
+    // delete user and return all the information about the user
+    async deleteUser(parent, args, {prisma, request}, info){
+        const userId = getUserId(request);
+    const userExists = await prisma.exists.User({id: userId});
+        
+    if(!userExists){
+        throw new Error('User does not exist');
+    }
+
+    return prisma.mutation.deleteUser({
+        where: {
+            id: userId
+        }
+    }, info);
+}, 
       // mutation to create experience
     // prisma was destructured from the ctx or context parameter passed from the entry point
     // new prisma instance would be returned;
@@ -112,7 +115,18 @@ const Mutation = {
     // mutation to delete experience
     // async function was used as the data gotten back is a promise
     // prisma.exist was used to check if experience exists in database and returns a boolean;
-   async deleteExperience(parent, args, { prisma }, info) {
+   async deleteExperience(parent, args, { prisma, request }, info) {
+       const userId = getUserId(request);
+       const experienceExists = await prisma.exists.Experience({
+           id: args.id,
+           author:{
+               id: userId
+           }
+       });
+
+       if(!experienceExists) {
+           throw new Error("You are not authorized to delete this experience");
+       }
         const experienceExists = await prisma.exists.Experience({id: args.id});
                           
 
@@ -131,19 +145,25 @@ const Mutation = {
     },
     // mutation to update  experience, 
 
-    async updateExperience(parent, args, { prisma }, info) {
-        const userExists = await prisma.exists.Experience({id: args.id});
+    async updateExperience(parent, {id, data}, { prisma, request }, info) {
+        const userId = getUserId(request);
+        const experienceExists = await prisma.exists.Experience({
+            id,
+            author:{
+                id: userId
+            }
+        });
                           
 
-        if (!userExists) {
-            throw new Error('Not found')
+        if (!experienceExists) {
+            throw new Error('Unable to delete this experience');
         }
         
            return prisma.mutation.updateExperience({
                 where:{
-                    id:args.id
+                id
                 },
-                data:args.data
+                data
             }, info)
        
     },
