@@ -210,8 +210,14 @@ const Mutation = {
             }, info)
     },
     // mutation to delete car
-    async deleteCar(parent, args, { prisma }, info) {
-        const carExists = await prisma.exists.Car({id: args.id});
+    async deleteCar(parent, {id}, { prisma, request }, info) {
+        const userId = getUserId(request);
+        const carExists = await prisma.exists.Car({
+            id,
+            author:{
+                id: userId
+            }
+        });
                           
 
         if (!carExists) {
@@ -220,10 +226,7 @@ const Mutation = {
 
         return prisma.mutation.deleteCar(
             {
-                where:{
-
-                    id:args.id
-                }
+                where:{ id }
             },info)
     },
     // mutation to create tip
@@ -238,25 +241,21 @@ const Mutation = {
         
     },
     // mutation to update tip
-    async updateTip(parent, args, { prisma }, info) {
-        const tipExists = await prisma.exists.Tip({id: args.id});
+    async updateTip(parent, {id, data}, { prisma }, info) {
+        const tipExists = await prisma.exists.Tip({ id });
                           
 
         if (!tipExists) {
             throw new Error('Tip not found')
         }
         
-           return prisma.mutation.updateTip({
-                where:{
-                    id:args.id
-                },
-                data:args.data
-            }, info)
+           return prisma.mutation.updateTip(
+               { where:{ id }, data }, info)
     },
 
     // mutation to delete tip
-    async deleteTip(parent, args, { prisma }, info) {
-        const tipExists = await prisma.exists.Tip({id: args.id});
+    async deleteTip(parent, {id}, { prisma }, info) {
+        const tipExists = await prisma.exists.Tip({id});
                           
 
         if (!tipExists) {
@@ -264,12 +263,7 @@ const Mutation = {
         }
 
         return prisma.mutation.deleteTip(
-            {
-                where:{
-
-                    id:args.id
-                }
-            },info)
+            { where:{ id } },info);
     },
     // mutation to create location
     createLocation(parent, args, { prisma }, info) {
