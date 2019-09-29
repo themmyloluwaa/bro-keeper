@@ -1,14 +1,7 @@
 // import needed files, pubsub for subscription, graphqlserver for node server
 // and all resolver files.
 import { GraphQLServer, PubSub } from 'graphql-yoga'
-import Query from './resolvers/Query'
-import Mutation from './resolvers/Mutation'
-import Subscription from './resolvers/Subscription'
-import Experience from './resolvers/Experience'
-import User from './resolvers/User'
-import Location from './resolvers/Location'
-import Car from './resolvers/Car'
-import Tip from './resolvers/Tip'
+import {resolvers, fragmentReplacements} from './resolvers/index'
 import prisma from './Prisma'
 
 // declare a new instance of pubsub and pass it to the context for accessibility
@@ -23,23 +16,20 @@ const pubsub = new PubSub()
 
 const server = new GraphQLServer({
     typeDefs: './src/schema.graphql',
-    resolvers: {
-        Query,
-        Mutation,
-        Subscription,
-        Experience,
-        Car,
-        Tip,
-        Location,
-        User
-    },
+    // resolver function was modifed, extracting all the resolvers into a file called index.js 
+    // in resolver directory in src directory. This was done to enable fragments usage and pass fragmentReplacement
+    // from prisma down to index.js which is our node entry point
+    resolvers,
     context(request){
         return {
             pubsub,
             prisma,
             request
         }
-    }
+    },
+    // fragmentReplacements was imported from index.js file in resolvers directory which contains
+    // all resolver function passed and a extractFragmentReplacement call that is imported from prisma-binding
+    fragmentReplacements
 })
 
 // started server and passed resolver functions
