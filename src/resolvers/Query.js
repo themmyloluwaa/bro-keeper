@@ -17,6 +17,11 @@ const Query = {
         } 
         return prisma.query.users(opArgs, info);
     },
+
+    me(parent, args, {prisma, request}, info){
+        const userId = getUserId(request);
+        return prisma.query.user({where:{ id: userId }}, info);
+    },
     // resolver function to query all or specified experiences based on the location or state
     experiences(parent, args, {  prisma }, info) {
         const opArgs = {};
@@ -36,8 +41,34 @@ const Query = {
         
         return prisma.query.experiences(opArgs, info);
     },
-    myExperiences(parent, args, {prisma, request}, info){
+     myExperiences(parent, args, {prisma, request}, info){
+        const userId = getUserId(request);
+        const opArgs = {
+            where:{
+                author:{
+                    id: userId
+                }
+            }
+        };
+
+
+        return prisma.query.experiences(opArgs, info);
+
+    },
+   async experience(parent, args, {prisma, request}, info){
         const userId = getUserId(request, false);
+
+        const experiences = await prisma.query.experiences({
+            where:{ id: args.id,
+                OR:[{
+                    author: { id: userId }
+                }]
+                }
+             }, info);
+        if(experiences.length === 0){
+            throw new Error("Experience Not Found");
+        }
+        return experiences[0];
 
     },
     // resolver function to query all cars depending on operation arguements passed;
@@ -91,6 +122,9 @@ const Query = {
 
         return prisma.query.locations(opArgs, info);
 
+    },
+    location(parent, args, {prisma}, info){
+        return prisma.query.location({ where: {id: args.id}}, info);
     }
 }
 

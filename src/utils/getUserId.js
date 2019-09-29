@@ -13,6 +13,7 @@ const {authorization} = headers;
             throw new Error("Authentication required");
         }
 
+        return null;
 }
 
 export {getUserId as default};

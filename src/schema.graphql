@@ -10,12 +10,13 @@
 type Query {
     users(query: String): [User!]!
     experiences(query:ExperienceQuery): [Experience!]!
-    myExperiences(id: ID!): [Experience!]!
+    myExperiences(query:String): [Experience!]!
     cars(query: CarQuery): [Car!]!
     tips(query:TipQuery): [Tip!]!
     locations(query:String): [Location!]!
     me: User!
     location: Location!
+    experience(id:ID!): Experience!
 }
 
 # mutation type definition containing mutations to 
@@ -112,8 +113,8 @@ input UserQuery{
 }
 # the  experience query required data
 input ExperienceQuery{
-  location: String!
-  state: String!
+  location: String
+  state: String
   destination: String
   description: String
   time: String
@@ -186,7 +187,7 @@ input UpdateLocationInput {
 type User {
     id: ID!
     name: String!
-    email: String!
+    email: String
     password: String!
     secretCode: Int!
     experiences: [Experience!]!
