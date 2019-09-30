@@ -8,6 +8,12 @@ const Query = {
                 OR:[
                     {
                         name_contains: args.query
+                    },
+                    {
+                       id: args.query
+                    },
+                    {
+                        email: args.query
                     }
                 ]
             }
@@ -23,17 +29,19 @@ const Query = {
     experiences(parent, args, {  prisma }, info) {
         const opArgs = {};
         
-        if(args.query){
+        if(args.query ){
             opArgs.where = {
                 AND: [
                     {
-                        location_contains: args.query.location
+                        location: args.query.location
                     },
                     {
-                        state_contains: args.query.state
+                        state: args.query.state
                     }
                 ]
             }
+        }else{
+            throw new Error("Please provide all required fields inputing the state and location correctly");
         }
         
         return prisma.query.experiences(opArgs, info);
@@ -86,7 +94,7 @@ const Query = {
                         passengers: args.query.passengers
                     },
                     {
-                        make: args.query.make
+                        make_contains: args.query.make
                     },
                     {
                         description_contains: args.query.description
@@ -109,7 +117,7 @@ const Query = {
         opArgs.where = {
             OR: [
                 {
-                    id: args.id
+                    id: args.query
                 },
                 {
                    latitude_contains : args.query
@@ -120,8 +128,17 @@ const Query = {
         return prisma.query.locations(opArgs, info);
 
     },
-    location(parent, args, {prisma}, info){
-        return prisma.query.location({ where: {id: args.id}}, info);
+    location(parent, args, {prisma, request}, info){
+        const userId = getUserId(request, false);
+        const opArgs={};
+
+        if(args){
+            opArgs.where={
+                id: args.id
+            };
+        }
+        
+        return prisma.query.location(opArgs, info);
     }
 }
 

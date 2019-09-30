@@ -15,7 +15,7 @@ type Query {
     tips(query:TipQuery): [Tip!]!
     locations(query:String): [Location!]!
     me: User!
-    location: Location!
+    location(id:ID!): Location!
     experience(id:ID!): Experience!
 }
 
