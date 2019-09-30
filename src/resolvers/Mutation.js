@@ -263,57 +263,34 @@ const Mutation = {
     createLocation(parent, args, { prisma, request }, info) {
         const {data } = args;
         // check if authentication was provided
-        const authPresent = request.request.headers.authorization;
-        // if provided, get the userId and create location  with the authenticated user;
-        if(typeof authPresent !== 'undefined'){
-            const userId = getUserId(request);
-            return prisma.mutation.createLocation({
-              data: {
-               longitude: data.longitude,
-               latitude: data.latitude,
-               author: {
+        const userId = getUserId(request);
+        return prisma.mutation.createLocation({
+          data: {
+            ...data,
+            author: {
                 connect:{
                     id: userId
                 }
-            }
-              }
-            },info);
-        }
-        // else create a new location that doesn't require user to be signed up;
-        else{
-            return prisma.mutation.createLocation({
-                data: {
-                 longitude: data.longitude,
-                 latitude: data.latitude
-                }
-              },info)
-        }
+            },
+          }
+        },info)
     },
     // mutation to update location
     async updateLocation(parent, args, { prisma, request }, info) {
-         // check if authentication was provided
-         const authPresent = request.request.headers.authorization;
-         // if provided, check if it exists;
-         if(typeof authPresent !== 'undefined'){
+       
             const userId = getUserId(request);
             const LocationExists = await prisma.exists.Location(
                 { id: args.id, author:{ id:userId }});   
                 if(!LocationExists){ throw new Error("Location does not exist")};
                 return prisma.mutation.updateLocation({
                 where:{ id:args.id }, data:args.data }, info)
-             }
-        else{
-
-            return prisma.mutation.updateLocation({
-                 where:{ id:args.id }, data:args.data}, info)
-        } 
+             
+        
     },
 
     // mutation to delete location
     async deleteLocation(parent, args, { prisma, request }, info) {
-        const authPresent = request.request.headers.authorization;
-         // if provided, get the userId and check if location exist;               
-        if(typeof authPresent !== 'undefined'){
+
             const userId = getUserId(request);
             const LocationExists = await prisma.exists.Location(
                 { id: args.id, author:{ id:userId }});   
@@ -321,23 +298,40 @@ const Mutation = {
                 if(!LocationExists){ throw new Error("Location does not exist")};
                 // if it exist, delete the location
                 return prisma.mutation.deleteLocation({
-                where:{ id:args.id } }, info)
+                where:{ id:args.id } }, info); 
+    },
+     // mutation to create AnonLocation
+     createAnonLocation(parent, args, { prisma }, info) {
+        const {data } = args;
+        return prisma.mutation.createAnonLocation({
+          ...data
+        },info)
+        
+    },
+    // mutation to update AnonLocation
+    async updateAnonLocation(parent, {id, data}, { prisma }, info) {
+        const AnonLocationExists = await prisma.exists.AnonLocation({ id });
+                          
+
+        if (!AnonLocationExists) {
+            throw new Error('Location not found')
+        }
+        
+           return prisma.mutation.updateAnonLocation(
+               { where:{ id }, data }, info)
+    },
+
+    // mutation to delete AnonLocation
+    async deleteAnonLocation(parent, {id}, { prisma }, info) {
+        const AnonLocationExists = await prisma.exists.AnonLocation({id});
+                          
+
+        if (!AnonLocationExists) {
+            throw new Error('Not found')
         }
 
-        else{
-            const LocationExists = await prisma.exists.Location({id: args.id});
-            if (!LocationExists) {
-                throw new Error('Not found')
-            }
-    
-            return prisma.mutation.deleteLocation(
-                {
-                    where:{
-    
-                        id:args.id
-                    }
-                },info)
-        }  
+        return prisma.mutation.deleteAnonLocation(
+            { where:{ id } },info);
     },
 }
 

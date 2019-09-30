@@ -9,6 +9,7 @@ import User from './User'
 import Location from './Location'
 import Car from './Car'
 import Tip from './Tip'
+import AnonLocation from './AnonLocation'
 
 // resolver functions were passed to a resolvers object and extracted for import in the nodejs entry point
 const resolvers = {
@@ -19,7 +20,8 @@ const resolvers = {
     Car,
     Tip,
     Location,
-    User
+    User,
+    AnonLocation
 }
 
 // a new instance of extractFragmentReplacements was called passing all the resolver functions so that

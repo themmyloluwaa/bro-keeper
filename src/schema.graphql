@@ -14,9 +14,11 @@ type Query {
     cars(query: CarQuery): [Car!]!
     tips(query:TipQuery): [Tip!]!
     locations(query:String): [Location!]!
+    AnonLocations(query:String): [AnonLocation!]!
     me: User!
-    location(id:ID!): Location!
     experience(id:ID!): Experience!
+    Location(id:ID!): Location!
+    AnonLocation(id:ID!): AnonLocation!
 }
 
 # mutation type definition containing mutations to 
@@ -43,6 +45,9 @@ type Mutation {
     createLocation(data: CreateLocationInput!): Location!
     deleteLocation(id: ID!): Location!
     updateLocation(id: ID!, data: UpdateLocationInput!): Location!
+    createAnonLocation(data: CreateAnonLocationInput!): AnonLocation!
+    deleteAnonLocation(id: ID!): AnonLocation!
+    updateAnonLocation(id: ID!, data: UpdateLocationInput!): AnonLocation!
 }
 
 # subscription type to always get live updates
@@ -52,6 +57,7 @@ type Subscription {
     car: CarSubscriptionPayload!
     tip: TipSubscriptionPayload!
     location: LocationSubscriptionPayload!
+    AnonLocation: AnonLocationSubscriptionPayload!
 }
 
 #type login authentication payload
@@ -173,14 +179,18 @@ input UpdateTipInput {
 
 # the create location instance required data
 input CreateLocationInput {
-   latitude: String!
-   longitude: String!
+   latitude: Float!
+   longitude: Float!
    author: ID
 }
 # the update location instance required data
 input UpdateLocationInput {
-   latitude: String
-   longitude: String
+   latitude: Float
+   longitude: Float
+}
+input CreateAnonLocationInput {
+   latitude: Float!
+   longitude: Float!
 }
 #user type definition
 
@@ -231,9 +241,15 @@ type Tip{
 #location type definition
 type Location {
   id: ID! 
-  longitude: String
-  latitude:  String
+  longitude: Float!
+  latitude:  Float!
   author: User!
+}
+
+type AnonLocation {
+  id: ID! 
+  longitude: Float!
+  latitude:  Float!
 }
 enum MutationType {
     CREATED
@@ -262,4 +278,8 @@ type TipSubscriptionPayload {
 type LocationSubscriptionPayload {
     mutation: MutationType!
     node: Location!
+}
+type AnonLocationSubscriptionPayload {
+    mutation: MutationType!
+    node: AnonLocation!
 }
