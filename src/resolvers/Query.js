@@ -117,10 +117,10 @@ const Query = {
         opArgs.where = {
             OR: [
                 {
-                    id: args.query
+                    longitude : args.query
                 },
                 {
-                   latitude_contains : args.query
+                    latitude : args.query
                 },
             ]
         }
@@ -128,18 +128,57 @@ const Query = {
         return prisma.query.locations(opArgs, info);
 
     },
+    myLocations(parent, args, {prisma, request}, info){
+        const userId = getUserId(request);
+        return prisma.query.location({
+            where:{
+                author:{
+                    id: userId
+                }
+            }
+        },info);
+    },
     location(parent, args, {prisma, request}, info){
-        const userId = getUserId(request, false);
+        const userId = getUserId(request);
         const opArgs={};
 
         if(args){
             opArgs.where={
-                id: args.id
+                id: args.id,
+                author:{
+                    id:userId
+                }
             };
         }
         
         return prisma.query.location(opArgs, info);
-    }
+    },
+    AnonLocations(parent, args, {prisma}, info) {
+        const opArgs = {};
+        opArgs.where = {
+            OR: [
+                {
+                    longitude : args.query
+                },
+                {
+                   latitude : args.query
+                },
+            ]
+        }
+
+        return prisma.query.AnonLocations(opArgs, info);
+
+    },
+    AnonLocation(parent, {id}, {prisma}, info){
+        const opArgs={};
+
+        if(args){
+            opArgs.where={ id }
+        }
+        
+        return prisma.query.Anonlocation(opArgs, info);
+    },
+
 }
 
 // export the query as default to be imported in entry point
