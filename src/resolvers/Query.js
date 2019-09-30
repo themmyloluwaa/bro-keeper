@@ -130,7 +130,7 @@ const Query = {
     },
     myLocations(parent, args, {prisma, request}, info){
         const userId = getUserId(request);
-        return prisma.query.location({
+        return prisma.query.locations({
             where:{
                 author:{
                     id: userId
@@ -153,7 +153,7 @@ const Query = {
         
         return prisma.query.location(opArgs, info);
     },
-    AnonLocations(parent, args, {prisma}, info) {
+    anonLocations(parent, args, {prisma}, info) {
         const opArgs = {};
         opArgs.where = {
             OR: [
@@ -166,17 +166,17 @@ const Query = {
             ]
         }
 
-        return prisma.query.AnonLocations(opArgs, info);
+        return prisma.query.anonLocations(opArgs, info);
 
     },
-    AnonLocation(parent, {id}, {prisma}, info){
+    anonLocation(parent, {id}, {prisma}, info){
         const opArgs={};
 
-        if(args){
+        if(id){
             opArgs.where={ id }
         }
         
-        return prisma.query.Anonlocation(opArgs, info);
+        return prisma.query.anonLocation(opArgs, info);
     },
 
 }

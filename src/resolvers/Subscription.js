@@ -16,7 +16,18 @@ const Subscription = {
         subscribe(parent, args, { prisma }, info) {
             return prisma.subscription.tip(null, info)
         }
-    }
+    },
+    location:{
+        subscribe(parent, args, {prisma}, info){
+            return prisma.subscription.location(null, info);
+        }
+    },
+    anonLocation:{
+        subscribe(parent, args, {prisma}, info){
+            return prisma.subscription.anonLocation(null, info);
+        }
+    },
+    
 }
 
 export { Subscription as default }

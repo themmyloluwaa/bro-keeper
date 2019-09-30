@@ -1,5 +1,9 @@
 # source: http://192.168.99.100:4467/
-# timestamp: Fri Sep 27 2019 15:16:53 GMT+0100 (West Africa Standard Time)
+# timestamp: Mon Sep 30 2019 13:45:39 GMT+0100 (West Africa Standard Time)
+
+type AggregateAnonLocation {
+  count: Int!
+}
 
 type AggregateCar {
   count: Int!
@@ -21,6 +25,250 @@ type AggregateUser {
   count: Int!
 }
 
+type AnonLocation implements Node {
+  id: ID!
+  longitude: Float!
+  latitude: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A connection to a list of items."""
+type AnonLocationConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [AnonLocationEdge]!
+  aggregate: AggregateAnonLocation!
+}
+
+input AnonLocationCreateInput {
+  id: ID
+  longitude: Float!
+  latitude: Float!
+}
+
+"""An edge in a connection."""
+type AnonLocationEdge {
+  """The item at the end of the edge."""
+  node: AnonLocation!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum AnonLocationOrderByInput {
+  id_ASC
+  id_DESC
+  longitude_ASC
+  longitude_DESC
+  latitude_ASC
+  latitude_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type AnonLocationPreviousValues {
+  id: ID!
+  longitude: Float!
+  latitude: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type AnonLocationSubscriptionPayload {
+  mutation: MutationType!
+  node: AnonLocation
+  updatedFields: [String!]
+  previousValues: AnonLocationPreviousValues
+}
+
+input AnonLocationSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [AnonLocationSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [AnonLocationSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [AnonLocationSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: AnonLocationWhereInput
+}
+
+input AnonLocationUpdateInput {
+  longitude: Float
+  latitude: Float
+}
+
+input AnonLocationUpdateManyMutationInput {
+  longitude: Float
+  latitude: Float
+}
+
+input AnonLocationWhereInput {
+  """Logical AND on all given filters."""
+  AND: [AnonLocationWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [AnonLocationWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [AnonLocationWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  longitude: Float
+
+  """All values that are not equal to given value."""
+  longitude_not: Float
+
+  """All values that are contained in given list."""
+  longitude_in: [Float!]
+
+  """All values that are not contained in given list."""
+  longitude_not_in: [Float!]
+
+  """All values less than the given value."""
+  longitude_lt: Float
+
+  """All values less than or equal the given value."""
+  longitude_lte: Float
+
+  """All values greater than the given value."""
+  longitude_gt: Float
+
+  """All values greater than or equal the given value."""
+  longitude_gte: Float
+  latitude: Float
+
+  """All values that are not equal to given value."""
+  latitude_not: Float
+
+  """All values that are contained in given list."""
+  latitude_in: [Float!]
+
+  """All values that are not contained in given list."""
+  latitude_not_in: [Float!]
+
+  """All values less than the given value."""
+  latitude_lt: Float
+
+  """All values less than or equal the given value."""
+  latitude_lte: Float
+
+  """All values greater than the given value."""
+  latitude_gt: Float
+
+  """All values greater than or equal the given value."""
+  latitude_gte: Float
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+}
+
+input AnonLocationWhereUniqueInput {
+  id: ID
+}
+
 type BatchPayload {
   """The number of nodes that have been affected by the Batch operation."""
   count: Long!
@@ -35,6 +283,8 @@ type Car implements Node {
   description: String
   experience: Experience
   author: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 """A connection to a list of items."""
@@ -110,6 +360,10 @@ enum CarOrderByInput {
   make_DESC
   description_ASC
   description_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type CarPreviousValues {
@@ -119,6 +373,8 @@ type CarPreviousValues {
   passengers: Int
   make: String
   description: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input CarScalarWhereInput {
@@ -352,6 +608,50 @@ input CarScalarWhereInput {
 
   """All values not ending with the given string."""
   description_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
 }
 
 type CarSubscriptionPayload {
@@ -706,6 +1006,50 @@ input CarWhereInput {
 
   """All values not ending with the given string."""
   description_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
   experience: ExperienceWhereInput
   author: UserWhereInput
 }
@@ -713,6 +1057,8 @@ input CarWhereInput {
 input CarWhereUniqueInput {
   id: ID
 }
+
+scalar DateTime
 
 type Experience implements Node {
   id: ID!
@@ -726,6 +1072,8 @@ type Experience implements Node {
   items: String
   car: Car!
   author: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 """A connection to a list of items."""
@@ -816,6 +1164,10 @@ enum ExperienceOrderByInput {
   robbed_DESC
   items_ASC
   items_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type ExperiencePreviousValues {
@@ -828,6 +1180,8 @@ type ExperiencePreviousValues {
   description: String!
   robbed: Boolean!
   items: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input ExperienceScalarWhereInput {
@@ -1163,6 +1517,50 @@ input ExperienceScalarWhereInput {
 
   """All values not ending with the given string."""
   items_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
 }
 
 type ExperienceSubscriptionPayload {
@@ -1636,6 +2034,50 @@ input ExperienceWhereInput {
 
   """All values not ending with the given string."""
   items_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
   car: CarWhereInput
   author: UserWhereInput
 }
@@ -1649,9 +2091,11 @@ scalar Json
 
 type Location implements Node {
   id: ID!
-  longitude: String
-  latitude: String
+  longitude: Float!
+  latitude: Float!
   author: User
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 """A connection to a list of items."""
@@ -1666,20 +2110,20 @@ type LocationConnection {
 
 input LocationCreateInput {
   id: ID
-  longitude: String
-  latitude: String
-  author: UserCreateOneWithoutLocationInput
+  longitude: Float!
+  latitude: Float!
+  author: UserCreateOneWithoutLocationsInput
 }
 
-input LocationCreateOneWithoutAuthorInput {
-  create: LocationCreateWithoutAuthorInput
-  connect: LocationWhereUniqueInput
+input LocationCreateManyWithoutAuthorInput {
+  create: [LocationCreateWithoutAuthorInput!]
+  connect: [LocationWhereUniqueInput!]
 }
 
 input LocationCreateWithoutAuthorInput {
   id: ID
-  longitude: String
-  latitude: String
+  longitude: Float!
+  latitude: Float!
 }
 
 """An edge in a connection."""
@@ -1698,12 +2142,157 @@ enum LocationOrderByInput {
   longitude_DESC
   latitude_ASC
   latitude_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type LocationPreviousValues {
   id: ID!
-  longitude: String
-  latitude: String
+  longitude: Float!
+  latitude: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input LocationScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [LocationScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [LocationScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [LocationScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  longitude: Float
+
+  """All values that are not equal to given value."""
+  longitude_not: Float
+
+  """All values that are contained in given list."""
+  longitude_in: [Float!]
+
+  """All values that are not contained in given list."""
+  longitude_not_in: [Float!]
+
+  """All values less than the given value."""
+  longitude_lt: Float
+
+  """All values less than or equal the given value."""
+  longitude_lte: Float
+
+  """All values greater than the given value."""
+  longitude_gt: Float
+
+  """All values greater than or equal the given value."""
+  longitude_gte: Float
+  latitude: Float
+
+  """All values that are not equal to given value."""
+  latitude_not: Float
+
+  """All values that are contained in given list."""
+  latitude_in: [Float!]
+
+  """All values that are not contained in given list."""
+  latitude_not_in: [Float!]
+
+  """All values less than the given value."""
+  latitude_lt: Float
+
+  """All values less than or equal the given value."""
+  latitude_lte: Float
+
+  """All values greater than the given value."""
+  latitude_gt: Float
+
+  """All values greater than or equal the given value."""
+  latitude_gte: Float
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
 }
 
 type LocationSubscriptionPayload {
@@ -1744,31 +2333,50 @@ input LocationSubscriptionWhereInput {
 }
 
 input LocationUpdateInput {
-  longitude: String
-  latitude: String
-  author: UserUpdateOneWithoutLocationInput
+  longitude: Float
+  latitude: Float
+  author: UserUpdateOneWithoutLocationsInput
+}
+
+input LocationUpdateManyDataInput {
+  longitude: Float
+  latitude: Float
 }
 
 input LocationUpdateManyMutationInput {
-  longitude: String
-  latitude: String
+  longitude: Float
+  latitude: Float
 }
 
-input LocationUpdateOneWithoutAuthorInput {
-  create: LocationCreateWithoutAuthorInput
-  connect: LocationWhereUniqueInput
-  disconnect: Boolean
-  delete: Boolean
-  update: LocationUpdateWithoutAuthorDataInput
-  upsert: LocationUpsertWithoutAuthorInput
+input LocationUpdateManyWithoutAuthorInput {
+  create: [LocationCreateWithoutAuthorInput!]
+  connect: [LocationWhereUniqueInput!]
+  set: [LocationWhereUniqueInput!]
+  disconnect: [LocationWhereUniqueInput!]
+  delete: [LocationWhereUniqueInput!]
+  update: [LocationUpdateWithWhereUniqueWithoutAuthorInput!]
+  updateMany: [LocationUpdateManyWithWhereNestedInput!]
+  deleteMany: [LocationScalarWhereInput!]
+  upsert: [LocationUpsertWithWhereUniqueWithoutAuthorInput!]
+}
+
+input LocationUpdateManyWithWhereNestedInput {
+  where: LocationScalarWhereInput!
+  data: LocationUpdateManyDataInput!
 }
 
 input LocationUpdateWithoutAuthorDataInput {
-  longitude: String
-  latitude: String
+  longitude: Float
+  latitude: Float
 }
 
-input LocationUpsertWithoutAuthorInput {
+input LocationUpdateWithWhereUniqueWithoutAuthorInput {
+  where: LocationWhereUniqueInput!
+  data: LocationUpdateWithoutAuthorDataInput!
+}
+
+input LocationUpsertWithWhereUniqueWithoutAuthorInput {
+  where: LocationWhereUniqueInput!
   update: LocationUpdateWithoutAuthorDataInput!
   create: LocationCreateWithoutAuthorInput!
 }
@@ -1822,86 +2430,94 @@ input LocationWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
-  longitude: String
+  longitude: Float
 
   """All values that are not equal to given value."""
-  longitude_not: String
+  longitude_not: Float
 
   """All values that are contained in given list."""
-  longitude_in: [String!]
+  longitude_in: [Float!]
 
   """All values that are not contained in given list."""
-  longitude_not_in: [String!]
+  longitude_not_in: [Float!]
 
   """All values less than the given value."""
-  longitude_lt: String
+  longitude_lt: Float
 
   """All values less than or equal the given value."""
-  longitude_lte: String
+  longitude_lte: Float
 
   """All values greater than the given value."""
-  longitude_gt: String
+  longitude_gt: Float
 
   """All values greater than or equal the given value."""
-  longitude_gte: String
-
-  """All values containing the given string."""
-  longitude_contains: String
-
-  """All values not containing the given string."""
-  longitude_not_contains: String
-
-  """All values starting with the given string."""
-  longitude_starts_with: String
-
-  """All values not starting with the given string."""
-  longitude_not_starts_with: String
-
-  """All values ending with the given string."""
-  longitude_ends_with: String
-
-  """All values not ending with the given string."""
-  longitude_not_ends_with: String
-  latitude: String
+  longitude_gte: Float
+  latitude: Float
 
   """All values that are not equal to given value."""
-  latitude_not: String
+  latitude_not: Float
 
   """All values that are contained in given list."""
-  latitude_in: [String!]
+  latitude_in: [Float!]
 
   """All values that are not contained in given list."""
-  latitude_not_in: [String!]
+  latitude_not_in: [Float!]
 
   """All values less than the given value."""
-  latitude_lt: String
+  latitude_lt: Float
 
   """All values less than or equal the given value."""
-  latitude_lte: String
+  latitude_lte: Float
 
   """All values greater than the given value."""
-  latitude_gt: String
+  latitude_gt: Float
 
   """All values greater than or equal the given value."""
-  latitude_gte: String
+  latitude_gte: Float
+  createdAt: DateTime
 
-  """All values containing the given string."""
-  latitude_contains: String
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
 
-  """All values not containing the given string."""
-  latitude_not_contains: String
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
 
-  """All values starting with the given string."""
-  latitude_starts_with: String
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
 
-  """All values not starting with the given string."""
-  latitude_not_starts_with: String
+  """All values less than the given value."""
+  createdAt_lt: DateTime
 
-  """All values ending with the given string."""
-  latitude_ends_with: String
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
 
-  """All values not ending with the given string."""
-  latitude_not_ends_with: String
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
   author: UserWhereInput
 }
 
@@ -1921,31 +2537,37 @@ type Mutation {
   createCar(data: CarCreateInput!): Car!
   createTip(data: TipCreateInput!): Tip!
   createLocation(data: LocationCreateInput!): Location!
+  createAnonLocation(data: AnonLocationCreateInput!): AnonLocation!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateExperience(data: ExperienceUpdateInput!, where: ExperienceWhereUniqueInput!): Experience
   updateCar(data: CarUpdateInput!, where: CarWhereUniqueInput!): Car
   updateTip(data: TipUpdateInput!, where: TipWhereUniqueInput!): Tip
   updateLocation(data: LocationUpdateInput!, where: LocationWhereUniqueInput!): Location
+  updateAnonLocation(data: AnonLocationUpdateInput!, where: AnonLocationWhereUniqueInput!): AnonLocation
   deleteUser(where: UserWhereUniqueInput!): User
   deleteExperience(where: ExperienceWhereUniqueInput!): Experience
   deleteCar(where: CarWhereUniqueInput!): Car
   deleteTip(where: TipWhereUniqueInput!): Tip
   deleteLocation(where: LocationWhereUniqueInput!): Location
+  deleteAnonLocation(where: AnonLocationWhereUniqueInput!): AnonLocation
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   upsertExperience(where: ExperienceWhereUniqueInput!, create: ExperienceCreateInput!, update: ExperienceUpdateInput!): Experience!
   upsertCar(where: CarWhereUniqueInput!, create: CarCreateInput!, update: CarUpdateInput!): Car!
   upsertTip(where: TipWhereUniqueInput!, create: TipCreateInput!, update: TipUpdateInput!): Tip!
   upsertLocation(where: LocationWhereUniqueInput!, create: LocationCreateInput!, update: LocationUpdateInput!): Location!
+  upsertAnonLocation(where: AnonLocationWhereUniqueInput!, create: AnonLocationCreateInput!, update: AnonLocationUpdateInput!): AnonLocation!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   updateManyExperiences(data: ExperienceUpdateManyMutationInput!, where: ExperienceWhereInput): BatchPayload!
   updateManyCars(data: CarUpdateManyMutationInput!, where: CarWhereInput): BatchPayload!
   updateManyTips(data: TipUpdateManyMutationInput!, where: TipWhereInput): BatchPayload!
   updateManyLocations(data: LocationUpdateManyMutationInput!, where: LocationWhereInput): BatchPayload!
+  updateManyAnonLocations(data: AnonLocationUpdateManyMutationInput!, where: AnonLocationWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
   deleteManyExperiences(where: ExperienceWhereInput): BatchPayload!
   deleteManyCars(where: CarWhereInput): BatchPayload!
   deleteManyTips(where: TipWhereInput): BatchPayload!
   deleteManyLocations(where: LocationWhereInput): BatchPayload!
+  deleteManyAnonLocations(where: AnonLocationWhereInput): BatchPayload!
   executeRaw(database: PrismaDatabase, query: String!): Json!
 }
 
@@ -1986,16 +2608,19 @@ type Query {
   cars(where: CarWhereInput, orderBy: CarOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Car]!
   tips(where: TipWhereInput, orderBy: TipOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tip]!
   locations(where: LocationWhereInput, orderBy: LocationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Location]!
+  anonLocations(where: AnonLocationWhereInput, orderBy: AnonLocationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AnonLocation]!
   user(where: UserWhereUniqueInput!): User
   experience(where: ExperienceWhereUniqueInput!): Experience
   car(where: CarWhereUniqueInput!): Car
   tip(where: TipWhereUniqueInput!): Tip
   location(where: LocationWhereUniqueInput!): Location
+  anonLocation(where: AnonLocationWhereUniqueInput!): AnonLocation
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   experiencesConnection(where: ExperienceWhereInput, orderBy: ExperienceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ExperienceConnection!
   carsConnection(where: CarWhereInput, orderBy: CarOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CarConnection!
   tipsConnection(where: TipWhereInput, orderBy: TipOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TipConnection!
   locationsConnection(where: LocationWhereInput, orderBy: LocationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LocationConnection!
+  anonLocationsConnection(where: AnonLocationWhereInput, orderBy: AnonLocationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AnonLocationConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -2010,12 +2635,15 @@ type Subscription {
   car(where: CarSubscriptionWhereInput): CarSubscriptionPayload
   tip(where: TipSubscriptionWhereInput): TipSubscriptionPayload
   location(where: LocationSubscriptionWhereInput): LocationSubscriptionPayload
+  anonLocation(where: AnonLocationSubscriptionWhereInput): AnonLocationSubscriptionPayload
 }
 
 type Tip implements Node {
   id: ID!
   yourTip: String
   twitterHandle: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 """A connection to a list of items."""
@@ -2050,12 +2678,18 @@ enum TipOrderByInput {
   yourTip_DESC
   twitterHandle_ASC
   twitterHandle_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type TipPreviousValues {
   id: ID!
   yourTip: String
   twitterHandle: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type TipSubscriptionPayload {
@@ -2234,6 +2868,50 @@ input TipWhereInput {
 
   """All values not ending with the given string."""
   twitterHandle_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
 }
 
 input TipWhereUniqueInput {
@@ -2248,7 +2926,9 @@ type User implements Node {
   secretCode: Int!
   experiences(where: ExperienceWhereInput, orderBy: ExperienceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Experience!]
   cars(where: CarWhereInput, orderBy: CarOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Car!]
-  location: Location
+  locations(where: LocationWhereInput, orderBy: LocationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Location!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 """A connection to a list of items."""
@@ -2269,7 +2949,7 @@ input UserCreateInput {
   secretCode: Int!
   experiences: ExperienceCreateManyWithoutAuthorInput
   cars: CarCreateManyWithoutAuthorInput
-  location: LocationCreateOneWithoutAuthorInput
+  locations: LocationCreateManyWithoutAuthorInput
 }
 
 input UserCreateOneWithoutCarsInput {
@@ -2282,8 +2962,8 @@ input UserCreateOneWithoutExperiencesInput {
   connect: UserWhereUniqueInput
 }
 
-input UserCreateOneWithoutLocationInput {
-  create: UserCreateWithoutLocationInput
+input UserCreateOneWithoutLocationsInput {
+  create: UserCreateWithoutLocationsInput
   connect: UserWhereUniqueInput
 }
 
@@ -2294,7 +2974,7 @@ input UserCreateWithoutCarsInput {
   password: String!
   secretCode: Int!
   experiences: ExperienceCreateManyWithoutAuthorInput
-  location: LocationCreateOneWithoutAuthorInput
+  locations: LocationCreateManyWithoutAuthorInput
 }
 
 input UserCreateWithoutExperiencesInput {
@@ -2304,10 +2984,10 @@ input UserCreateWithoutExperiencesInput {
   password: String!
   secretCode: Int!
   cars: CarCreateManyWithoutAuthorInput
-  location: LocationCreateOneWithoutAuthorInput
+  locations: LocationCreateManyWithoutAuthorInput
 }
 
-input UserCreateWithoutLocationInput {
+input UserCreateWithoutLocationsInput {
   id: ID
   name: String!
   email: String!
@@ -2337,6 +3017,10 @@ enum UserOrderByInput {
   password_DESC
   secretCode_ASC
   secretCode_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type UserPreviousValues {
@@ -2345,6 +3029,8 @@ type UserPreviousValues {
   email: String!
   password: String!
   secretCode: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type UserSubscriptionPayload {
@@ -2391,7 +3077,7 @@ input UserUpdateInput {
   secretCode: Int
   experiences: ExperienceUpdateManyWithoutAuthorInput
   cars: CarUpdateManyWithoutAuthorInput
-  location: LocationUpdateOneWithoutAuthorInput
+  locations: LocationUpdateManyWithoutAuthorInput
 }
 
 input UserUpdateManyMutationInput {
@@ -2415,13 +3101,13 @@ input UserUpdateOneRequiredWithoutExperiencesInput {
   upsert: UserUpsertWithoutExperiencesInput
 }
 
-input UserUpdateOneWithoutLocationInput {
-  create: UserCreateWithoutLocationInput
+input UserUpdateOneWithoutLocationsInput {
+  create: UserCreateWithoutLocationsInput
   connect: UserWhereUniqueInput
   disconnect: Boolean
   delete: Boolean
-  update: UserUpdateWithoutLocationDataInput
-  upsert: UserUpsertWithoutLocationInput
+  update: UserUpdateWithoutLocationsDataInput
+  upsert: UserUpsertWithoutLocationsInput
 }
 
 input UserUpdateWithoutCarsDataInput {
@@ -2430,7 +3116,7 @@ input UserUpdateWithoutCarsDataInput {
   password: String
   secretCode: Int
   experiences: ExperienceUpdateManyWithoutAuthorInput
-  location: LocationUpdateOneWithoutAuthorInput
+  locations: LocationUpdateManyWithoutAuthorInput
 }
 
 input UserUpdateWithoutExperiencesDataInput {
@@ -2439,10 +3125,10 @@ input UserUpdateWithoutExperiencesDataInput {
   password: String
   secretCode: Int
   cars: CarUpdateManyWithoutAuthorInput
-  location: LocationUpdateOneWithoutAuthorInput
+  locations: LocationUpdateManyWithoutAuthorInput
 }
 
-input UserUpdateWithoutLocationDataInput {
+input UserUpdateWithoutLocationsDataInput {
   name: String
   email: String
   password: String
@@ -2461,9 +3147,9 @@ input UserUpsertWithoutExperiencesInput {
   create: UserCreateWithoutExperiencesInput!
 }
 
-input UserUpsertWithoutLocationInput {
-  update: UserUpdateWithoutLocationDataInput!
-  create: UserCreateWithoutLocationInput!
+input UserUpsertWithoutLocationsInput {
+  update: UserUpdateWithoutLocationsDataInput!
+  create: UserCreateWithoutLocationsInput!
 }
 
 input UserWhereInput {
@@ -2657,13 +3343,59 @@ input UserWhereInput {
 
   """All values greater than or equal the given value."""
   secretCode_gte: Int
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
   experiences_every: ExperienceWhereInput
   experiences_some: ExperienceWhereInput
   experiences_none: ExperienceWhereInput
   cars_every: CarWhereInput
   cars_some: CarWhereInput
   cars_none: CarWhereInput
-  location: LocationWhereInput
+  locations_every: LocationWhereInput
+  locations_some: LocationWhereInput
+  locations_none: LocationWhereInput
 }
 
 input UserWhereUniqueInput {

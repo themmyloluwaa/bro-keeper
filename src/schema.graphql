@@ -14,11 +14,11 @@ type Query {
     cars(query: CarQuery): [Car!]!
     tips(query:TipQuery): [Tip!]!
     locations(query:Float): [Location!]!
-    AnonLocations(query:Float): [AnonLocation!]!
+    anonLocations(query:Float): [AnonLocation!]!
     me: User!
     experience(id:ID!): Experience!
-    Location(id:ID!): Location!
-    AnonLocation(id:ID!): AnonLocation!
+    location(id:ID!): Location!
+    anonLocation(id:ID!): AnonLocation!
     myLocations: [Location!]!
 }
 
@@ -53,12 +53,12 @@ type Mutation {
 
 # subscription type to always get live updates
 type Subscription {
-    experience(postId: ID!): ExperienceSubscriptionPayload!
+    experience: ExperienceSubscriptionPayload!
     myExperience: ExperienceSubscriptionPayload!
     car: CarSubscriptionPayload!
     tip: TipSubscriptionPayload!
     location: LocationSubscriptionPayload!
-    AnonLocation: AnonLocationSubscriptionPayload!
+    anonLocation: AnonLocationSubscriptionPayload!
 }
 
 #type login authentication payload
@@ -155,8 +155,6 @@ input CreateCarInput {
   passengers: Int
   make: String
   description: String
-  # experience: ID
-  # author: ID
   
 }
 # the update car instance required data
@@ -203,7 +201,7 @@ type User {
     secretCode: Int!
     experiences: [Experience!]!
     cars: [Car!]!
-    location: Location
+    location: [Location!]!
 }
 # experience type definition
 type Experience {
@@ -258,29 +256,39 @@ enum MutationType {
     DELETED
 }
 
+type LocationPreviousValues {
+  id: ID!
+  longitude: Float!
+  latitude: Float!
+}
+
 # experience type subscription payload
 type ExperienceSubscriptionPayload {
     mutation: MutationType!
-    node: Experience!
+    node: Experience
 }
 # car type subscription payload
 type CarSubscriptionPayload {
     mutation: MutationType!
-    node: Car!
+    node: Car
 }
 
 # tip type subscription payload
 type TipSubscriptionPayload {
     mutation: MutationType!
-    node: Tip!
+    node: Tip
 }
 
 # location type subscription payload
 type LocationSubscriptionPayload {
     mutation: MutationType!
-    node: Location!
+    node: Location
+    updatedFields: [String!]
+    previousValues: LocationPreviousValues
 }
 type AnonLocationSubscriptionPayload {
     mutation: MutationType!
-    node: AnonLocation!
+    node: AnonLocation
+    updatedFields: [String!]
+    previousValues: LocationPreviousValues
 }
