@@ -106,7 +106,7 @@ const Mutation = {
                }
             }, info)
         }else{
-            throw new Error('Your secret code is not valid, please input your four digit secret code');
+            throw new Error('Your secret code is not valid, please input the correct four digit secret code you inputed when creating your account');
         }
     },
       // mutation to create experience
