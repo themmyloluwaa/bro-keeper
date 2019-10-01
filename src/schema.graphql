@@ -34,6 +34,7 @@ type Mutation {
     login(data: LoginUserInput!): AuthPayload!
     deleteUser: User!
     updateUser(data: UpdateUserInput!): User!
+    changePassword(secretCode:Int!, newPassword:String): User!
     createExperience(data: CreateExperienceInput!): Experience!
     deleteExperience(id: ID!): Experience!
     updateExperience(id: ID!, data: UpdateExperienceInput!): Experience!
@@ -86,6 +87,7 @@ input LoginUserInput {
 input UpdateUserInput {
     name: String
     email: String
+    password:String
 }
 # the create experience instance required data
 input CreateExperienceInput {

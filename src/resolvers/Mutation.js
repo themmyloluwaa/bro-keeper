@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import genToken from '../utils/genToken'
 import getUserId from '../utils/getUserId'
+import hashPassword from '../utils/hashPassword'
 
 
 const Mutation = {
@@ -17,10 +18,10 @@ const Mutation = {
       if(emailTaken){
           throw new Error('This email has already been used');
       }
-      if(data.password.length < 8 || data.secretCode.length < 4){
-          throw new Error('Password must be 8 characters or longer');
+      if(data.secretCode.length < 4){
+          throw new Error('Please provide a four digit number that you will never forget');
       }
-      const password = await bcrypt.hash(data.password, 10);
+      const password = await hashPassword(data.password)
 
         const user = await prisma.mutation.createUser({data:{
             ...data,
@@ -57,7 +58,9 @@ const Mutation = {
     },
     async updateUser(parent, {data}, {prisma, request}, info){
         const userId = getUserId(request);
-
+        if(typeof data.password === 'string'){
+            data.password = await hashPassword(data.password);
+        }
         return prisma.mutation.updateUser({
             where:{
                 id:userId
@@ -70,18 +73,42 @@ const Mutation = {
     // delete user and return all the information about the user
     async deleteUser(parent, args, {prisma, request}, info){
         const userId = getUserId(request);
-    const userExists = await prisma.exists.User({id: userId});
+        const userExists = await prisma.exists.User({id: userId});
         
-    if(!userExists){
-        throw new Error('User does not exist');
-    }
-
-    return prisma.mutation.deleteUser({
-        where: {
-            id: userId
+        if(!userExists){
+            throw new Error('User does not exist');
         }
-    }, info);
-}, 
+
+        return prisma.mutation.deleteUser({
+            where: {
+                id: userId
+            }
+        }, info);
+    }, 
+    async changePassword(parent, {secretCode, newPassword}, {prisma, request}, info){
+        const userId = getUserId(request);
+        const password =  await hashPassword(newPassword)
+        const user = await prisma.query.user({
+            where:{
+                id: userId
+            }
+        });
+        if(!user){
+            throw new Error('This user does not exist');
+        }
+        if(user.secretCode === secretCode){
+            return prisma.mutation.updateUser({
+                where:{
+                    id:userId
+                },
+               data:{
+                   password
+               }
+            }, info)
+        }else{
+            throw new Error('Your secret code is not valid, please input your four digit secret code');
+        }
+    },
       // mutation to create experience
     // prisma was destructured from the ctx or context parameter passed from the entry point
     // new prisma instance would be returned;
