@@ -7,19 +7,20 @@
 # 6 a query of location from one user
 # 7 a query of users personal experiences
 
+# import UserOrderByInput, ExperienceOrderByInput, CarOrderByInput, TipOrderByInput, LocationOrderByInput from './generated/prisma.graphql'
 type Query {
-    users(query: String): [User!]!
-    experiences(query:ExperienceQuery): [Experience!]!
-    myExperiences: [Experience!]!
-    cars(query: CarQuery): [Car!]!
-    tips(query:TipQuery): [Tip!]!
-    locations(query:Float): [Location!]!
-    anonLocations(query:Float): [AnonLocation!]!
+    users(query: String, after: String, skip: Int, first: Int, orderBy:UserOrderByInput): [User!]!
+    experiences(query:ExperienceQuery, after: String, skip: Int, first: Int, orderBy:ExperienceOrderByInput): [Experience!]!
+    myExperiences(after: String, skip: Int, first: Int, orderBy:ExperienceOrderByInput): [Experience!]!
+    cars(query: CarQuery, after: String, skip: Int, first: Int, orderBy:CarOrderByInput): [Car!]!
+    tips(query:TipQuery, after: String, skip: Int, first: Int, orderBy:TipOrderByInput): [Tip!]!
+    locations(query:Float, after: String, skip: Int, first: Int, orderBy:LocationOrderByInput): [Location!]!
+    anonLocations(query:Float, after: String, skip: Int, first: Int, orderBy:LocationOrderByInput): [AnonLocation!]!
     me: User!
     experience(id:ID!): Experience!
     location(id:ID!): Location!
     anonLocation(id:ID!): AnonLocation!
-    myLocations: [Location!]!
+    myLocations(after: String,skip: Int, first: Int, orderBy:LocationOrderByInput): [Location!]!
 }
 
 # mutation type definition containing mutations to 
@@ -205,6 +206,8 @@ type User {
     experiences: [Experience!]!
     cars: [Car!]!
     location: [Location!]!
+    createdAt: String! 
+    updatedAt: String! 
 }
 # experience type definition
 type Experience {
@@ -219,6 +222,8 @@ type Experience {
   items: String
   author: User!
   car: Car!
+  createdAt: String! 
+  updatedAt: String! 
 }
 
 # car type definition
@@ -231,6 +236,8 @@ type Car {
   description: String
   author: User!
   experience: Experience!
+  createdAt: String! 
+  updatedAt: String! 
 }
 
 # tip type definition
@@ -238,6 +245,8 @@ type Tip{
   id: ID!
   yourTip: String
   twitterHandle:String
+  createdAt: String! 
+  updatedAt: String! 
 }
 
 #location type definition
@@ -246,12 +255,16 @@ type Location {
   longitude: Float!
   latitude:  Float!
   author: User!
+  createdAt: String! 
+  updatedAt: String! 
 }
 
 type AnonLocation {
   id: ID! 
   longitude: Float!
   latitude:  Float!
+  createdAt: String! 
+  updatedAt: String! 
 }
 enum MutationType {
     CREATED
@@ -259,10 +272,14 @@ enum MutationType {
     DELETED
 }
 
+
+
 type LocationPreviousValues {
   id: ID!
   longitude: Float!
   latitude: Float!
+  createdAt: String! 
+  updatedAt: String! 
 }
 
 # experience type subscription payload

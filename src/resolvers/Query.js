@@ -2,7 +2,12 @@ import getUserId from '../utils/getUserId'
 const Query = {
     // resolver function to query all users
     users(parent, args, {prisma}, info) {
-        const opArgs = {};
+        const opArgs = {
+            skip: args.skip,
+            first: args.first,
+            orderBy: args.orderBy,
+            after: args.after,   
+        };
         if(args.query){
             opArgs.where={
                 OR:[
@@ -25,9 +30,15 @@ const Query = {
         const userId = getUserId(request);
         return prisma.query.user({where:{ id: userId }}, info);
     },
+
     // resolver function to query all or specified experiences based on the location or state
     experiences(parent, args, {  prisma }, info) {
-        const opArgs = {};
+        const opArgs = {
+            skip: args.skip,
+            first: args.first,
+            orderBy: args.orderBy,
+            after: args.after,   
+        };
         
         if(args.query ){
             opArgs.where = {
@@ -46,9 +57,15 @@ const Query = {
         
         return prisma.query.experiences(opArgs, info);
     },
+
      myExperiences(parent, args, {prisma, request}, info){
         const userId = getUserId(request);
+        
         const opArgs = {
+            skip: args.skip,
+            first: args.first,
+            orderBy: args.orderBy,
+            after:args.after,
             where:{
                 author:{
                     id: userId
@@ -60,6 +77,7 @@ const Query = {
         return prisma.query.experiences(opArgs, info);
 
     },
+
    async experience(parent, args, {prisma, request}, info){
         const userId = getUserId(request, false);
 
@@ -79,7 +97,12 @@ const Query = {
     // resolver function to query all cars depending on operation arguements passed;
     cars(parent, args, { prisma }, info) {
        
-        const opArgs = {};
+        const opArgs = {
+            skip: args.skip,
+            first: args.first,
+            orderBy: args.orderBy,
+            after: args.after,   
+        };
         
         if(args.query){
             opArgs.where = {
@@ -107,22 +130,35 @@ const Query = {
     },
     // resolver to query all tips
     tips(parent, args, {  prisma }, info) {
-        const opArgs = {};
+        const opArgs = {
+            skip: args.skip,
+            first: args.first,
+            orderBy: args.orderBy,
+            after: args.after,   
+        };
 
        
         return prisma.query.tips(opArgs, info);
     },
     locations(parent, args, {prisma}, info) {
-        const opArgs = {};
-        opArgs.where = {
-            OR: [
-                {
-                    longitude : args.query
-                },
-                {
-                    latitude : args.query
-                },
-            ]
+        const opArgs = {
+            skip: args.skip,
+            first: args.first,
+            orderBy: args.orderBy,
+            after: args.after,   
+        };
+
+        if(args.query){
+            opArgs.where = {
+                OR: [
+                    {
+                        longitude : args.query
+                    },
+                    {
+                        latitude : args.query
+                    },
+                ]
+            }
         }
 
         return prisma.query.locations(opArgs, info);
@@ -130,13 +166,18 @@ const Query = {
     },
     myLocations(parent, args, {prisma, request}, info){
         const userId = getUserId(request);
-        return prisma.query.locations({
+        const opArgs = {
+            skip: args.skip,
+            first: args.first,
+            orderBy: args.orderBy,
+            after: args.after,
             where:{
                 author:{
                     id: userId
                 }
-            }
-        },info);
+            }   
+        };
+        return prisma.query.locations(opArgs, info);
     },
     location(parent, args, {prisma, request}, info){
         const userId = getUserId(request);
@@ -154,16 +195,23 @@ const Query = {
         return prisma.query.location(opArgs, info);
     },
     anonLocations(parent, args, {prisma}, info) {
-        const opArgs = {};
-        opArgs.where = {
-            OR: [
-                {
-                    longitude : args.query
-                },
-                {
-                   latitude : args.query
-                },
-            ]
+        const opArgs = {
+            skip: args.skip,
+            first: args.first,
+            orderBy: args.orderBy,
+            after: args.after,   
+        };
+        if(args.query){
+            opArgs.where = {
+                OR: [
+                    {
+                        longitude : args.query
+                    },
+                    {
+                    latitude : args.query
+                    },
+                ]
+            }
         }
 
         return prisma.query.anonLocations(opArgs, info);
