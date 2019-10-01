@@ -58,7 +58,8 @@ type Subscription {
     car: CarSubscriptionPayload!
     tip: TipSubscriptionPayload!
     location: LocationSubscriptionPayload!
-    anonLocation: AnonLocationSubscriptionPayload!
+    myLocation(id:ID!): LocationSubscriptionPayload!
+    anonLocation(id:ID): AnonLocationSubscriptionPayload!
 }
 
 #type login authentication payload
