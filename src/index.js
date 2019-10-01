@@ -3,7 +3,7 @@
 import '@babel/polyfill'
 import { GraphQLServer, PubSub } from 'graphql-yoga'
 import {resolvers, fragmentReplacements} from './resolvers/index'
-import prisma from './Prisma'
+import prisma from './prisma'
 
 // declare a new instance of pubsub and pass it to the context for accessibility
 // throughout the file;
