@@ -33,6 +33,6 @@ const server = new GraphQLServer({
 })
 
 // started server and passed resolver functions
-server.start(() => {
-    console.log('The server is up!')
+server.start({ port: process.env.PORT || 4000 },() => {
+    console.log(`The server is up! at ${process.env.PORT || 4000}`);
 })
