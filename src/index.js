@@ -1,6 +1,6 @@
 // import needed files, pubsub for subscription, graphqlserver for node server
 // and all resolver files.
-import '@babel/polyfill'
+import '@babel/polyfill/noConflict'
 import { GraphQLServer, PubSub } from 'graphql-yoga'
 import {resolvers, fragmentReplacements} from './resolvers/index'
 import prisma from './prisma'
