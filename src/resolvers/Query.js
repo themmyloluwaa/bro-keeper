@@ -40,9 +40,9 @@ const Query = {
             after: args.after,   
         };
         
-        if(args.query ){
+        if(args.query){
             opArgs.where = {
-                AND: [
+                OR: [
                     {
                         location: args.query.location
                     },
@@ -51,8 +51,6 @@ const Query = {
                     }
                 ]
             }
-        }else{
-            throw new Error("Please provide all required fields inputing the state and location correctly");
         }
         
         return prisma.query.experiences(opArgs, info);
